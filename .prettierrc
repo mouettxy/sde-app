@@ -1,0 +1,27 @@
+{
+  "semi": false,
+  "singleQuote": true,
+  "bracketSpacing": true,
+  "arrowParens": "always",
+  "trailingComma": "all",
+  "printWidth": 120,
+  "pugWrapAttributesThreshold": 1,
+  "pugSortAttributesBeginning": [
+    "^cols$",
+    "^key$",
+    "^v-else$",
+    "^v-for$",
+    "^:key$",
+    "^v-if$",
+    "^v-else-if$",
+    "^v-on$",
+    "^v-bind$",
+    "^ref$",
+    "^v-model",
+    "^name$",
+    "^:.*$",
+    "^@.*$"
+  ],
+  "pugSortAttributesEnd": ["^:?hint$"],
+  "pugSortAttributes": "desc"
+}

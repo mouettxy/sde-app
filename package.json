@@ -1,0 +1,29 @@
+{
+  "name": "sde-app",
+  "version": "1.0.0",
+  "description": "sde-app",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@prettier/plugin-pug": "^1.8.1",
+    "eslint": "^7.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-vue": "^7.0.1",
+    "lerna": "^3.22.1",
+    "prettier": "^2.1.2",
+    "webpack": "^4.44.2"
+  },
+  "dependencies": {
+    "@vue/cli": "^4.5.7",
+    "@vue/cli-service": "^4.5.7",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "@vue/cli-plugin-eslint": "~4.5.0"
+  }
+}

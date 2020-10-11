@@ -1,17 +1,12 @@
 <template lang="pug">
 v-app
   v-main
-    sde-button
+    router-view
 </template>
 
 <script>
-import ui from '@sde-app/ui'
-
 export default {
   name: 'App',
-  components: {
-    SdeButton: ui.SdeButton,
-  },
 }
 </script>
 

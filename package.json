@@ -4,6 +4,8 @@
   "description": "sde-app",
   "private": true,
   "scripts": {
+    "serve:expeditor-page": "yarn workspace @sde-app/expeditor-page serve",
+    "serve:ui": "yarn workspace @sde-app/ui storybook:serve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -21,9 +23,17 @@
     "webpack": "^4.44.2"
   },
   "dependencies": {
+    "@babel/core": "^7.11.6",
     "@vue/cli": "^4.5.7",
+    "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "^4.5.7",
     "@vue/eslint-config-prettier": "^6.0.0",
-    "@vue/cli-plugin-eslint": "~4.5.0"
+    "babel-loader": "^8.1.0",
+    "css-loader": "^4.3.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "ts-loader": "^8.0.4",
+    "typescript": "^4.0.3",
+    "vue-loader": "^15.9.3"
   }
 }

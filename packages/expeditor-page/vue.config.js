@@ -5,4 +5,11 @@ module.exports = {
     },
   },
   transpileDependencies: ['vuetify', '@sde-app/ui'],
+  css: {
+    loaderOptions: {
+      sass: {
+        prependData: '@import "~@sde-app/ui/src/sass/variables.sass"',
+      },
+    },
+  },
 }

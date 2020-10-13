@@ -1,23 +1,10 @@
-import SdeButton from './SdeButton'
-import vuetify from '@/plugins/vuetify'
-import { storiesOf } from '@storybook/vue'
-import { withKnobs, color } from '@storybook/addon-knobs'
+import { generateStorybookHeader } from '../../helpers/_storybookHeader'
+import { color } from '@storybook/addon-knobs'
 import { action } from '@storybook/addon-actions'
 
-const storybook = storiesOf('Button', module)
-storybook.addDecorator(
-  withKnobs({
-    escapeHTML: false,
-  }),
-)
-
-storybook.addDecorator(() => ({
-  vuetify,
-  template: '<v-app><v-main><v-container fluid><story/></v-container></v-main></v-app>',
-}))
+const storybook = generateStorybookHeader('Button', 'inner')
 
 storybook.add('differentColors', () => ({
-  components: { SdeButton },
   template: /* html */ `
     <div>
       <sde-button @click="action" color="primary"> primary </sde-button>
@@ -32,14 +19,13 @@ storybook.add('differentColors', () => ({
   props: {
     color: {
       type: String,
-      default: color('task', 'secondary'),
+      default: color('color', 'secondary'),
     },
   },
   methods: { action: action('clicked') },
 }))
 
 storybook.add('asIcon', () => ({
-  components: { SdeButton },
   template: /* html */ `
     <div>
       <sde-button :color="color" icon @click="action"> mdi-account </sde-button>
@@ -53,14 +39,13 @@ storybook.add('asIcon', () => ({
   props: {
     color: {
       type: String,
-      default: color('task', 'secondary'),
+      default: color('color', 'secondary'),
     },
   },
   methods: { action: action('clicked') },
 }))
 
 storybook.add('differentStyles', () => ({
-  components: { SdeButton },
   template: /* html */ `
     <div>
       <sde-button :color="color" text> as text </sde-button>
@@ -69,14 +54,13 @@ storybook.add('differentStyles', () => ({
   props: {
     color: {
       type: String,
-      default: color('task', 'secondary'),
+      default: color('color', 'secondary'),
     },
   },
   methods: { action: action('clicked') },
 }))
 
 storybook.add('addIcons', () => ({
-  components: { SdeButton },
   template: /* html */ `
     <div>
       <sde-button @click="action" color="primary" prepend-icon="mdi-account"> prepend </sde-button>
@@ -87,7 +71,7 @@ storybook.add('addIcons', () => ({
   props: {
     color: {
       type: String,
-      default: color('task', 'secondary'),
+      default: color('color', 'secondary'),
     },
   },
   methods: { action: action('clicked') },

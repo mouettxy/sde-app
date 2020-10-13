@@ -4,8 +4,9 @@
   "description": "sde-app",
   "private": true,
   "scripts": {
-    "serve:expeditor-page": "yarn workspace @sde-app/expeditor-page serve",
+    "serve:app": "yarn workspace @sde-app/app serve",
     "serve:ui": "yarn workspace @sde-app/ui storybook:serve",
+    "deploy": "yarn workspace @sde-app/server compile && yarn workspace @sde-app/app build && node deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -15,6 +16,8 @@
   ],
   "devDependencies": {
     "@prettier/plugin-pug": "^1.8.1",
+    "@typescript-eslint/eslint-plugin": "^4.4.0",
+    "@typescript-eslint/parser": "^4.4.0",
     "eslint": "^7.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-vue": "^7.0.1",
@@ -28,12 +31,14 @@
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "^4.5.7",
     "@vue/eslint-config-prettier": "^6.0.0",
+    "@vue/eslint-config-typescript": "^7.0.0",
     "babel-loader": "^8.1.0",
     "css-loader": "^4.3.0",
+    "node-ssh": "^11.1.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "ts-loader": "^8.0.4",
-    "typescript": "^4.0.3",
+    "typescript": "^3.9.3",
     "vue-loader": "^15.9.3"
   }
 }

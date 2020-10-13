@@ -1,6 +1,25 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify/lib/framework'
-import { VApp, VMain, VContainer, VBtn, VIcon } from 'vuetify/lib'
+import {
+  VApp,
+  VMain,
+  VContainer,
+  VBtn,
+  VIcon,
+  VToolbar,
+  VSpacer,
+  VToolbarTitle,
+  VAppBar,
+  VNavigationDrawer,
+  VList,
+  VListItemGroup,
+  VListItem,
+  VListItemTitle,
+  VListItemContent,
+  VListItemSubtitle,
+  VDivider,
+  VListItemIcon,
+} from 'vuetify/lib'
 import 'vuetify/src/styles/styles.sass'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@mdi/font/css/materialdesignicons.css'
@@ -13,6 +32,19 @@ export const VuetifyAlacarte = {
     VContainer,
     VBtn,
     VIcon,
+    VToolbar,
+    VToolbarTitle,
+    VSpacer,
+    VAppBar,
+    VNavigationDrawer,
+    VList,
+    VListItemGroup,
+    VListItem,
+    VListItemTitle,
+    VListItemSubtitle,
+    VListItemContent,
+    VDivider,
+    VListItemIcon,
   },
 }
 

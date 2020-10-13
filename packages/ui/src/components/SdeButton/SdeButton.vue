@@ -2,7 +2,7 @@
 v-btn.sde-button.sde-button--hover(
   :to='to',
   :text='text',
-  :style='{ color: icon ? iconColor(color) : textColor(color) }',
+  :style='{ color: icon || text ? getIconColor(color) : getTextColor(color) }',
   :icon='icon',
   :color='color',
   @click='onClick'
@@ -19,11 +19,11 @@ v-btn.sde-button.sde-button--hover(
 </template>
 
 <script>
-import { getTextColor, rgba2hex } from '../../helpers'
-import { startsWith } from 'lodash'
+import { Colors } from '../../helpers'
 
 export const SdeButton = {
   name: 'SdeButton',
+  mixins: [Colors],
   props: {
     color: {
       type: String,
@@ -51,32 +51,6 @@ export const SdeButton = {
     onClick(evt) {
       this.$emit('click', evt)
     },
-    textColor(color) {
-      if (color[0] !== '#') {
-        const currentTheme = this.$vuetify.theme.themes[this.$vuetify.theme.isDark ? 'dark' : 'light']
-        for (const key in currentTheme) {
-          if (key === color) {
-            return getTextColor(currentTheme[key])
-          }
-        }
-      }
-
-      if (startsWith(color, 'rgb')) {
-        return getTextColor(rgba2hex(color))
-      }
-
-      return getTextColor(color)
-    },
-    iconColor(color) {
-      if (startsWith(color, 'rgb')) {
-        return rgba2hex(color)
-      }
-
-      return color
-    },
-  },
-  mounted() {
-    this.textColor('#333')
   },
 }
 

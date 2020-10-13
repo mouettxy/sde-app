@@ -1,7 +1,7 @@
 function requireComponents(req, VueInstance) {
   for (const key of req.keys()) {
     const name = /(\w*)\.(vue)$/g.exec(key)
-    console.log(name)
+
     if (name) {
       VueInstance.component(name[1], req(key).default)
     }

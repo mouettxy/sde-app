@@ -4,6 +4,9 @@ import { ClientModel } from './models/clientModel'
 import dJSON from 'dirty-json'
 import { each } from 'lodash'
 import axios from 'axios'
+import moment from 'moment'
+
+moment.locale('ru')
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const sleep = require('util').promisify(setTimeout)
@@ -221,24 +224,28 @@ async function seedOrders(data) {
       const response = await extendAddressInformation(e.id)
 
       if (response && response.processed && response.processed.who_carry !== 'Не назначен') {
-        const client = await ClientModel.findOne({ id: e.client })
         const expeditor = await UserModel.findOne({ username: response.processed.who_carry })
 
-        if (client && expeditor) {
+        if (expeditor) {
+          const date = moment(e.date, 'DD.MM.YYYY').toISOString()
+          const orderTime = moment(e.orderTime, 'HH:mm:ss').toISOString()
+          const orderFromTime = moment(e.orderFromTime, 'DD.MM.YYYY HH:mm').toISOString()
+          const orderToTime = moment(e.orderToTime, 'DD.MM.YYYY HH:mm').toISOString()
           const created = new OrderModel({
             id: e.id,
-            month: e.moth,
+            month: e.month,
             status: response.processed.status,
-            date: e.date,
-            orderTime: e.orderTime,
-            orderFromTime: e.orderFromTime,
-            orderToTime: e.orderToTime,
+            date,
+            orderTime,
+            orderFromTime,
+            orderToTime,
+            clientId: response.modern.client,
             addresses: response.modern.addresses,
             info: response.modern.info,
             price: response.modern.price,
             route: response.modern.route,
-            client: client._id,
-            expeditor: expeditor._id,
+            courier: expeditor.username,
+            courerCredentials: expeditor.credentials,
           })
 
           const saved = await created.save()

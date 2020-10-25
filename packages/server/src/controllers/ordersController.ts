@@ -268,6 +268,11 @@ export class OrdersController {
     const id = request.params.id
     const data = request.body
 
+    for (const key in data) {
+      if (['date', 'orderTime', 'orderFromTime', 'orderToTime'].includes(key)) {
+        data[key] = new Date(data[key])
+      }
+    }
 
     await this.model
       .findOneAndUpdate({ id }, data, {

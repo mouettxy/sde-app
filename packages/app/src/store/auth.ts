@@ -26,8 +26,8 @@ export default class Auth extends VuexModule {
   async login(payload: AuthInput) {
     const response = await axios.post('/auth/login', payload)
 
-    if (response) {
-      this.context.commit('LOGIN', response)
+    if (response.status === 200) {
+      this.context.commit('LOGIN', response.data)
       return Promise.resolve(true)
     } else {
       return Promise.resolve(false)
@@ -38,7 +38,7 @@ export default class Auth extends VuexModule {
   async logout() {
     const response = await axios.post('/auth/logout')
 
-    if (response) {
+    if (response.status === 200) {
       this.context.commit('LOGOUT')
       return Promise.resolve(true)
     } else {
@@ -50,7 +50,7 @@ export default class Auth extends VuexModule {
   async register(payload: RegisterInput) {
     const response = await axios.post('/auth/register', payload)
 
-    if (response) {
+    if (response.status === 200) {
       return Promise.resolve(true)
     } else {
       return Promise.resolve(false)

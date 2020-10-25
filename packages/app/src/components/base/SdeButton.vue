@@ -1,5 +1,6 @@
 <template lang="pug">
 v-btn.sde-button.sde-button--hover(
+  :type='type',
   :to='to',
   :text='text',
   :style='{ color: icon || text ? getIconColor(color) : getTextColor(color) }',
@@ -18,43 +19,24 @@ v-btn.sde-button.sde-button--hover(
       v-icon(right) {{ appendIcon }}
 </template>
 
-<script>
-import { Colors } from '../../helpers'
+<script lang="ts">
+import Colors from '@/mixins/colors'
+import { Component, Vue, Mixins, Prop } from 'vue-property-decorator'
 
-export const SdeButton = {
-  name: 'SdeButton',
-  mixins: [Colors],
-  props: {
-    color: {
-      type: String,
-      default: 'black',
-    },
-    icon: {
-      type: Boolean,
-      default: false,
-    },
-    to: {
-      type: String,
-    },
-    text: {
-      type: Boolean,
-      default: false,
-    },
-    prependIcon: {
-      type: String,
-    },
-    appendIcon: {
-      type: String,
-    },
-  },
-  methods: {
-    onClick(evt) {
-      this.$emit('click', evt)
-    },
-  },
+@Component
+export default class SdeButton extends Mixins(Colors) {
+  @Prop({ type: String, default: 'black' }) color!: string
+  @Prop({ type: Boolean, default: false }) icon!: boolean
+  @Prop({ type: String }) to!: string
+  @Prop({ type: String, default: 'button' }) type!: string
+  @Prop({ type: Boolean, default: false }) text!: boolean
+  @Prop({ type: String }) prependIcon!: string
+  @Prop({ type: String }) appendIcon!: string
+
+  onClick(evt: any) {
+    this.$emit('click', evt)
+  }
 }
-
-export default SdeButton
 </script>
 
 <style lang="sass">

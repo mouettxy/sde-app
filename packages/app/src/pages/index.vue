@@ -8,8 +8,9 @@
 </route>
 
 <template lang="pug">
-v-main
-  span index page
+.page-index
+  h5.text-h5.text-center Добро пожаловать в sde
+  h6.text-h6.text-center Страница находится в разработке
 </template>
 
 <script lang="ts">

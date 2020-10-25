@@ -1,28 +1,31 @@
-import { getModelForClass, pre, prop } from '@typegoose/typegoose'
+import { getModelForClass, pre, prop, plugin } from '@typegoose/typegoose'
 import { UserState } from './sharedObjects'
-
+import mongoosePaginate from 'mongoose-paginate-v2'
+import mongooseSearch from 'mongoose-partial-search'
+@plugin(mongooseSearch)
+@plugin(mongoosePaginate)
 @pre<User>('save', async function () {
   if (this.phone) {
     this.phone = this.phone.replace(/[^0-9]/g, '')
   }
 })
 export class User {
-  @prop({ required: true })
+  @prop({ required: true, searchable: true })
   public username: string
 
   @prop({ required: true })
   public password: string
 
-  @prop({})
+  @prop({ searchable: true })
   public comment: string
 
-  @prop({ required: true })
+  @prop({ required: true, searchable: true })
   public phone: string
 
-  @prop({ default: '' })
+  @prop({ default: '', searchable: true })
   public email: string
 
-  @prop({ required: true })
+  @prop({ required: true, searchable: true })
   public credentials: string
 
   @prop({ default: false })
@@ -31,16 +34,16 @@ export class User {
   @prop({ default: false })
   public canTakeOrders: boolean
 
-  @prop({})
+  @prop({ searchable: true })
   public workTime: string
 
-  @prop({ default: 'expeditor' })
+  @prop({ default: 'expeditor', searchable: true })
   public role: string
 
-  @prop({ default: 'moto' })
+  @prop({ default: 'moto', searchable: true })
   public transport: string
 
-  @prop({ default: 'Краснодар' })
+  @prop({ default: 'Краснодар', searchable: true })
   public region: string
 
   @prop({ default: 3 })
@@ -49,7 +52,7 @@ export class User {
   @prop({ default: true })
   public isSdeTransport: boolean
 
-  @prop({})
+  @prop({ searchable: true })
   public lastActive: string
 
   @prop({ type: UserState, _id: false })

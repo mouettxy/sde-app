@@ -37,6 +37,23 @@ export class UsersController {
       .catch(() => next(new HttpException(422, 'Не удалось обработать данные')))
   }
 
+  public getPaginated = async (
+    request: express.Request,
+    response: express.Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    const { query, options } = parsePaginateResponse(request.query, this.model)
+
+    try {
+      // @ts-ignore
+      const paginated = await this.model.paginate(query, options)
+      response.status(200)
+      response.send(paginated)
+    } catch (error) {
+      next(new HttpException(500, error.message))
+    }
+  }
+
   public updateById = async (
     request: express.Request,
     response: express.Response,

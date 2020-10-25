@@ -16,6 +16,7 @@ export class UsersRouter {
     this.expressRouter
       .all(`${path}*`, authenticationMiddleware)
       .get(path, controller.getAll)
+      .get(`${path}/paginated`, controller.getPaginated)
       .get(`${path}/:id`, controller.getById)
       .put(`${path}/:id`, controller.updateById)
       .delete(`${path}/:id`, controller.deleteById)

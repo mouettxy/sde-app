@@ -7,4 +7,11 @@ module.exports = {
       locales: ['ru', 'en'],
     },
   },
+  css: {
+    loaderOptions: {
+      sass: {
+        prependData: '@import "@/sass/variables.sass"',
+      },
+    },
+  },
 }

@@ -18,6 +18,7 @@ export class OrdersRouter {
       .get(path, controller.getAll)
       .get(`${path}/paginated`, controller.getPaginated)
       .get(`${path}/:id`, controller.getById)
+      .get(`${path}/:id/copy`, controller.getToCopyOne)
       .post(path, controller.create)
       .put(`${path}/:id`, controller.updateById)
       .delete(`${path}/:id`, controller.deleteById)

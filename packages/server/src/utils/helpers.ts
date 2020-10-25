@@ -1,8 +1,11 @@
-import { cloneDeep, last } from 'lodash'
+import { cloneDeep, join, last, map } from 'lodash'
 import { UserModel } from '../models'
 import { NextFunction } from 'connect'
+import moment from 'moment'
 import express from 'express'
 import { body, validationResult } from 'express-validator/check'
+
+moment.locale('ru')
 
 export function getAnonymousAnimal() {
   const animals = [
@@ -110,11 +113,8 @@ export const badRequestHelper = () => {
   }
 }
 
-export const parsePaginateResponse = (requestQuery, needOffice = false, model = undefined) => {
+export const parsePaginateResponse = (requestQuery, model = undefined, extendSearch = undefined) => {
   let query: any = {}
-  if (needOffice) {
-    query.office = requestQuery.office
-  }
 
   const page = requestQuery.page
   const limit = requestQuery.limit
@@ -127,7 +127,6 @@ export const parsePaginateResponse = (requestQuery, needOffice = false, model = 
     try {
       options.sort = JSON.parse(`${requestQuery.sort}`)
     } catch (e) {
-      console.log(e)
       // do nothing
     }
   }
@@ -135,8 +134,10 @@ export const parsePaginateResponse = (requestQuery, needOffice = false, model = 
   if (requestQuery.search) {
     if (model) {
       const searchQuery = model.searchBuilder(requestQuery.search)
-      if (parseInt(requestQuery.search)) {
-        searchQuery.$and[0].$or.push({ id: { $gte: requestQuery.search, $lte: requestQuery.search } })
+      if (extendSearch) {
+        if (parseInt(requestQuery.search)) {
+          searchQuery.$and[0].$or.push({ id: { $gte: requestQuery.search, $lte: requestQuery.search } })
+        }
       }
       query = {
         ...query,
@@ -160,12 +161,83 @@ export const parsePaginateResponse = (requestQuery, needOffice = false, model = 
     Object.assign(query, newFilter)
   }
 
-  if (requestQuery.master) {
-    query.master = requestQuery.master
-  }
-
   return {
     query,
     options,
   }
+}
+
+export function copyToExcel(
+  data: Record<string, any>,
+  schema: Array<{
+    type: string
+    value: string
+    format?: string
+    initialFormat?: string
+    onTrueValue?: any
+    onFalseValue?: any
+    fn?: Function
+  }>,
+) {
+  const ht = String.fromCharCode(0x09)
+  const cr = String.fromCharCode(0x0d)
+  const cf = String.fromCharCode(0x0a)
+
+  const mappedData = map(schema, (e) => {
+    let value: any = data[e.value]
+
+    if (!value) {
+      value = ''
+    }
+
+    if (e.type === 'date') {
+      if (e.format && !e.initialFormat) {
+        value = moment(value).format(e.format)
+      } else if (e.format && e.initialFormat) {
+        value = moment(value, e.initialFormat).format(e.format)
+      } else {
+        value = ''
+      }
+    }
+
+    if (e.type === 'int') {
+      value = parseInt(value) || 0
+    }
+
+    if (e.type === 'boolean') {
+      if (e.onTrueValue && e.onFalseValue) {
+        value = value ? e.onTrueValue : e.onFalseValue
+      }
+    }
+
+    if (e.type === 'custom') {
+      if (e.fn) {
+        value = e.fn(value)
+      }
+    }
+
+    return { field: e.value, value: String(value) }
+  })
+
+  const lastIndex = mappedData.length - 1
+
+  const mappedResult = map(mappedData, (e, i) => {
+    const value = e.value.replace(/(\r\n|\n|\r)/gm, '').replace('\t', '')
+
+    if (value === '') {
+      if (i === lastIndex) {
+        return ht + cr + cf
+      } else {
+        return ht
+      }
+    }
+
+    if (i === lastIndex) {
+      return value + ht + cr + cf
+    } else {
+      return value + ht
+    }
+  })
+
+  return join(mappedResult, '')
 }

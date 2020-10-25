@@ -1,6 +1,8 @@
+import { api } from './../server'
 import bcrypt from 'bcryptjs'
 import { NextFunction } from 'connect'
 import express from 'express'
+import { parsePaginateResponse } from '../utils/helpers'
 import { ObjectNotFoundException } from '../exceptions'
 import { HttpException } from '../exceptions'
 import { UserModel } from '../models'
@@ -42,16 +44,14 @@ export class UsersController {
   ): Promise<void> => {
     const id: string = request.params.id
     const userData = request.body
-    const hashedPassword = await bcrypt.hash(userData.password, 10)
+
     // @ts-ignore
-    await this.user.findOneAndUpdate(id, userData, { new: true }).then((user) => {
+    await this.model.findByIdAndUpdate(id, userData, { new: true }).then((user) => {
       if (user) {
-        const updatedUser = {
-          ...userData,
-          password: hashedPassword,
-        }
+        api.io.emit('updated user', user, userData)
+        api.io.emit('update users')
         response.status(200)
-        response.send(updatedUser)
+        response.send(user)
       } else {
         next(new ObjectNotFoundException(this.model.modelName, id))
       }
@@ -66,6 +66,8 @@ export class UsersController {
     const id = request.params.id
     await this.model.findByIdAndDelete(id).then((saved) => {
       if (saved) {
+        api.io.emit('deleted user', id)
+        api.io.emit('update users')
         response.status(200)
         response.json({
           message: `Пользователь ${id} успешно удалён`,

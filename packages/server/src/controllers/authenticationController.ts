@@ -1,3 +1,4 @@
+import { api } from './../server'
 import bcrypt from 'bcryptjs'
 import { NextFunction } from 'connect'
 import express from 'express'
@@ -40,6 +41,7 @@ export class AuthenticationController {
         })
 
         user.set('password', undefined)
+        api.io.emit('update users table', `Создан пользователь с именем ${user.username}`)
         res.send(user)
       } catch (error) {
         next(new HttpException(500, error.message))

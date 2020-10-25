@@ -1,3 +1,4 @@
+import { api } from './../server'
 import { NextFunction } from 'connect'
 import express from 'express'
 import { parsePaginateResponse } from '../utils/helpers'
@@ -25,7 +26,7 @@ export class OrdersController {
     response: express.Response,
     next: NextFunction,
   ): Promise<void> => {
-    const { query, options } = parsePaginateResponse(request.query, true, this.model)
+    const { query, options } = parsePaginateResponse(request.query, this.model)
 
     try {
       // @ts-ignore
@@ -36,6 +37,7 @@ export class OrdersController {
       next(new HttpException(500, error.message))
     }
   }
+
 
   public getById = async (request: express.Request, response: express.Response, next: NextFunction): Promise<void> => {
     const id = request.params.id
@@ -63,6 +65,8 @@ export class OrdersController {
       .save()
       .then((saved) => {
         response.status(200)
+        api.io.emit('created order', saved)
+        api.io.emit('update orders')
         response.send(saved)
       })
       .catch((err: Error) => {
@@ -78,6 +82,7 @@ export class OrdersController {
     const id = request.params.id
     const data = request.body
 
+
     await this.model
       .findOneAndUpdate({ id }, data, {
         new: true,
@@ -85,6 +90,8 @@ export class OrdersController {
       .then((saved) => {
         if (saved) {
           response.status(200)
+          api.io.emit('updated order', saved)
+          api.io.emit('update orders')
           response.send(saved)
         } else {
           next(new ObjectNotFoundException(this.model.modelName, id))
@@ -111,6 +118,8 @@ export class OrdersController {
       .then((saved) => {
         if (saved) {
           response.status(200)
+          api.io.emit('deleted order', saved)
+          api.io.emit('update orders')
           response.json({
             message: `Заявка ${id} удалена успешно`,
           })

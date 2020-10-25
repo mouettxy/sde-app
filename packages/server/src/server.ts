@@ -8,10 +8,10 @@ import { validateEnv } from './utils'
 
 validateEnv()
 
-const api = new RestApi([new AuthenticationRouter(), new OrdersRouter(), new UsersRouter(), new ClientRouter()])
+export const api = new RestApi([new AuthenticationRouter(), new OrdersRouter(), new UsersRouter(), new ClientRouter()])
 
 api.io.on('connection', (socket) => {
-  console.log('socket connected succesefully')
+  console.log('connected socket')
 })
 
 api.listen()

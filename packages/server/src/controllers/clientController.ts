@@ -1,3 +1,4 @@
+import { api } from './../server'
 import { NextFunction } from 'connect'
 import express from 'express'
 import { parsePaginateResponse } from '../utils/helpers'
@@ -25,8 +26,8 @@ export class ClientController {
     response: express.Response,
     next: NextFunction,
   ): Promise<void> => {
-    const { query, options } = parsePaginateResponse(request.query, false, this.model)
-    console.log(query, options)
+    const { query, options } = parsePaginateResponse(request.query, this.model)
+
     try {
       // @ts-ignore
       const clients = await this.model.paginate(query, options)
@@ -63,6 +64,7 @@ export class ClientController {
       .save()
       .then((saved) => {
         response.status(200)
+        api.io.emit('update clients table', `Создан клиент с ID ${saved.id}`)
         response.send(saved)
       })
       .catch((err: Error) => {
@@ -78,12 +80,13 @@ export class ClientController {
     const id: string = request.params.id
     const data = request.body
     await this.model
-      .findByIdAndUpdate(id, data, {
+      .findOneAndUpdate({ id }, data, {
         new: true,
       })
       .then((saved) => {
         if (saved) {
           response.status(200)
+          api.io.emit('update clients table', `Обновлён клиент с ID ${saved.id}`)
           response.send(saved)
         } else {
           next(new ObjectNotFoundException(this.model.modelName, id))
@@ -105,6 +108,7 @@ export class ClientController {
       .then((saved) => {
         if (saved) {
           response.status(200)
+          api.io.emit('update clients table', `Удалён клиент с ID ${saved.id}`)
           response.send({ message: id })
         } else {
           next(new ObjectNotFoundException(this.model.modelName, id))

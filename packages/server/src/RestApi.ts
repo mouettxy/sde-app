@@ -33,7 +33,7 @@ class RestApi {
 
   private initializeRouter(routers: any): void {
     routers.forEach((router) => {
-      this.expressApp.use('/api/v1/', router.expressRouter)
+      this.expressApp.use('/v1/', router.expressRouter)
     })
   }
 

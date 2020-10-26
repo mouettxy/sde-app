@@ -1,12 +1,12 @@
 import { api } from './../server'
 import { NextFunction } from 'connect'
 import express from 'express'
-import { parsePaginateResponse } from '../utils/helpers'
+import { copyToExcelOrder, parsePaginateResponse } from '../utils/helpers'
 import { ObjectNotFoundException } from '../exceptions'
 import { HttpException } from '../exceptions'
 import { OrderModel } from '../models'
 import { copyToExcel } from '../utils/helpers'
-import { includes } from 'lodash'
+import { includes, join, map } from 'lodash'
 
 export class OrdersController {
   private model = OrderModel
@@ -50,179 +50,75 @@ export class OrdersController {
     try {
       const order = await this.model.findOne({ id: id })
       response.status(200)
-      response.send(
-        copyToExcel(order, [
-          {
-            type: 'string',
-            value: 'month',
-          },
-          {
-            type: 'string',
-            value: 'createdAt',
-          },
-          {
-            type: 'string',
-            value: 'logist',
-          },
-          {
-            type: 'string',
-            value: 'id',
-          },
-          {
-            type: 'string',
-            value: 'site',
-          },
-          {
-            type: 'string',
-            value: 'courierCredentials',
-          },
-          {
-            type: 'custom',
-            value: 'transport',
-            fn: (value: string) => {
-              if (includes(value, 'car')) {
-                return 'Требуется автомобиль'
-              }
-
-              return ''
-            },
-          },
-          {
-            type: 'date',
-            value: 'date',
-            format: 'DD.MM.YYYY',
-          },
-          {
-            type: 'date',
-            value: 'orderTime',
-            format: 'HH:mm',
-          },
-          {
-            type: 'date',
-            value: 'orderFromTime',
-            format: 'DD.MM.YYYY HH:mm',
-          },
-          {
-            type: 'date',
-            value: 'orderToTime',
-            format: 'DD.MM.YYYY HH:mm',
-          },
-          {
-            type: 'string',
-            value: 'da_1',
-          },
-          {
-            type: 'string',
-            value: 'from',
-          },
-          {
-            type: 'string',
-            value: 'da_2',
-          },
-          {
-            type: 'string',
-            value: 'to',
-          },
-          {
-            type: 'string',
-            value: 'clientId',
-          },
-          {
-            type: 'string',
-            value: 'clientName',
-          },
-          {
-            type: 'string',
-            value: 'clientPhone',
-          },
-          {
-            type: 'string',
-            value: 'additionals',
-          },
-          {
-            type: 'int',
-            value: 'buyin',
-          },
-          {
-            type: 'int',
-            value: 'totalAdditionals',
-          },
-          {
-            type: 'string',
-            value: 'paymentForm',
-          },
-          {
-            type: 'int',
-            value: 'total',
-          },
-          {
-            type: 'boolean',
-            value: 'express',
-            onTrueValue: 'Да',
-            onFalseValue: 'Нет',
-          },
-          {
-            type: 'int',
-            value: 'totalDiscounted',
-          },
-          {
-            type: 'string',
-            value: 'paymentWho',
-          },
-          {
-            type: 'int',
-            value: 'mileage',
-          },
-          {
-            type: 'custom',
-            value: 'timeInTravel',
-            fn: (value: string) => {
-              return `${value} м.`
-            },
-          },
-          {
-            type: 'string',
-            value: 'promocode',
-          },
-          {
-            type: 'string',
-            value: 'discount',
-          },
-          {
-            type: 'string',
-            value: 'comment',
-          },
-          {
-            type: 'string',
-            value: 'paymentType',
-          },
-          {
-            type: 'boolean',
-            value: 'payed',
-            onTrueValue: 'Да',
-            onFalseValue: 'Нет',
-          },
-          {
-            type: 'int',
-            value: 'debt',
-          },
-          {
-            type: 'string',
-            value: 'region',
-          },
-          {
-            type: 'string',
-            value: 'transport',
-          },
-          {
-            type: 'string',
-            value: 'transportType',
-          },
-        ]),
-      )
+      response.send(copyToExcel(order, copyToExcelOrder()))
     } catch (error) {
       next(new HttpException(500, error.message))
     }
+  }
+
+  public getToCopyMany = async (
+    request: express.Request,
+    response: express.Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    const dateFromFirst = request.query.dateFrom ? (request.query.dateFrom[0] as Date) : ''
+    const dateFromSecond = request.query.dateFrom ? (request.query.dateFrom[1] as Date) : ''
+    const dateToFirst = request.query.dateTo ? (request.query.dateTo[0] as Date) : ''
+    const dateToSecond = request.query.dateTo ? (request.query.dateTo[1] as Date) : ''
+    const courier = request.query.courier ? (request.query.courier as string) : ''
+    let status: string | Array<string> = request.query.status ? (request.query.status as string) : 'Любой'
+    if (status === 'Любой') {
+      status = ['Новая', 'В работе', 'Закрыта', 'Не состоялась']
+    } else if (status === 'Новые') {
+      status = ['Новая', 'В работе']
+    } else if (status === 'Закрытые') {
+      status = ['Закрыта', 'Не состоялась']
+    } else {
+      status = [status]
+    }
+
+    const match: any = {
+      status: {
+        $in: ['Новая', 'В работе', 'Закрыта', 'Не состоялась'],
+      },
+      courier: new RegExp(courier, 'i'),
+    }
+
+    if (dateFromFirst && dateFromSecond) {
+      match.date = {
+        $gte: new Date(dateFromFirst),
+        $lt: new Date(dateFromSecond),
+      }
+    }
+
+    if (dateToFirst && dateToSecond) {
+      match.closedAt = {
+        $gte: new Date(dateToFirst),
+        $lt: new Date(dateToSecond),
+      }
+    }
+
+    const aggregated = await this.model.aggregate([
+      {
+        $match: match,
+      },
+      {
+        $sort: {
+          id: -1,
+        },
+      },
+    ])
+
+    console.log(aggregated)
+
+    const mapped = map(aggregated, (e) => {
+      return copyToExcel(e, copyToExcelOrder())
+    })
+
+    const toCopy = join(mapped, '')
+
+    response.status(200)
+    response.send(toCopy)
   }
 
   public getById = async (request: express.Request, response: express.Response, next: NextFunction): Promise<void> => {

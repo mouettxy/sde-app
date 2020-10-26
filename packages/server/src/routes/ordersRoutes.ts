@@ -17,6 +17,7 @@ export class OrdersRouter {
       .all(`${path}*`, authenticationMiddleware)
       .get(path, controller.getAll)
       .get(`${path}/paginated`, controller.getPaginated)
+      .get(`${path}/copy`, controller.getToCopyMany)
       .get(`${path}/:id`, controller.getById)
       .get(`${path}/:id/copy`, controller.getToCopyOne)
       .post(path, controller.create)

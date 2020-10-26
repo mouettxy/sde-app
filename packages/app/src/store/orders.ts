@@ -32,6 +32,25 @@ export default class Orders extends VuexModule {
   }
 
   @Action
+  async copyMany(payload: any) {
+    this.context.commit('SET_LOADING', true)
+
+    try {
+      const response = await axios.get(`/order/copy`, { params: payload })
+
+      if (response.status === 200) {
+        return response.data
+      } else {
+        return false
+      }
+    } catch (error) {
+      return false
+    } finally {
+      this.context.commit('SET_LOADING', false)
+    }
+  }
+
+  @Action
   async updateOrder(payload: { id: string | number; data: Record<string, any> }) {
     this.context.commit('SET_LOADING', true)
 

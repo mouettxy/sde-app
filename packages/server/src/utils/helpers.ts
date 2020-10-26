@@ -1,4 +1,4 @@
-import { cloneDeep, includes, join, last, map } from 'lodash'
+import { cloneDeep, each, includes, join, last, map } from 'lodash'
 import { UserModel } from '../models'
 import { NextFunction } from 'connect'
 import moment from 'moment'
@@ -147,18 +147,19 @@ export const parsePaginateResponse = (requestQuery, model = undefined, extendSea
   }
 
   if (requestQuery.filter) {
-    const filter = JSON.parse(requestQuery.filter as string)
-    const newFilter = {}
-    for (const k in filter) {
-      if (filter[k]) {
-        if (parseInt(filter[k])) {
-          newFilter[k] = { $gte: filter[k] }
-        } else {
-          newFilter[k] = { $regex: new RegExp(filter[k], 'i') }
-        }
+    const parsed = map(requestQuery.filter, (e) => {
+      return JSON.parse(requestQuery.filter as string)
+    })
+
+    const filter: any = {}
+
+    each(parsed, (e) => {
+      if (e.type === 'in') {
+        filter[e.key] = { $in: e.value }
       }
-    }
-    Object.assign(query, newFilter)
+    })
+
+    Object.assign(query, filter)
   }
 
   return {

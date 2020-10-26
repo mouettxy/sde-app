@@ -94,7 +94,12 @@ export default class Orders extends VuexModule {
   public tableUri = '/order/paginated'
   public isLoading = false
   public countRows = 0
-  public options = TableHelpers.generateOptions(1, 2, 'active')
+  public options: any = TableHelpers.generateOptions(1, 2, 'id', function (options: any) {
+    return {
+      ...options,
+      filter: [{ type: 'in', key: 'status', value: ['Новая', 'В работе'] }],
+    }
+  })
   public headers = TableHelpers.generateHeaders({
     id: '№',
     month: 'Месяц',

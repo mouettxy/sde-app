@@ -1,8 +1,13 @@
 import { filter, map, reduce, zip, fromPairs, assign, cloneDeep } from 'lodash'
 
 export class TableHelpers {
-  public static generateOptions(page: number, perPage: number, initialSortBy: string) {
-    return {
+  public static generateOptions(
+    page: number,
+    perPage: number,
+    initialSortBy: string,
+    extendFieldsFn?: (options: any) => any,
+  ) {
+    let options = {
       page,
       itemsPerPage: perPage,
       sortBy: [initialSortBy],
@@ -11,6 +16,12 @@ export class TableHelpers {
       multiSort: true,
       search: '',
     }
+
+    if (extendFieldsFn) {
+      options = extendFieldsFn(options)
+    }
+
+    return options
   }
 
   public static generateHeaders(headers: Record<string, string>) {
@@ -54,6 +65,10 @@ export class TableHelpers {
 
     if (options.search) {
       query.search = options.search
+    }
+
+    if (options.filter) {
+      query.filter = options.filter
     }
 
     const sortDesc = map(options.sortDesc, (e) => (e ? 'desc' : 'asc'))

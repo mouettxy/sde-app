@@ -24,8 +24,17 @@
         @click='showCopyToolbar = !showCopyToolbar',
         icon
       ) mdi-clipboard-text-multiple
+      sde-button(
+        @click='showFilterToolbar = !showFilterToolbar',
+        icon
+      ) mdi-filter
 
     template(#toolbar.after)
+      v-slide-y-transition
+        filter-orders-block.mb-2(
+          v-if='showFilterToolbar',
+          @change='onFilterChange'
+        )
       v-slide-y-transition
         copy-orders-block.mb-2(v-if='showCopyToolbar')
 
@@ -66,7 +75,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { ordersModule, usersModule } from '@/store'
 import { User } from '@/typings/user'
-import { find } from 'lodash'
+import { find, map } from 'lodash'
 import {
   paymentFormSelect,
   paymentTypeSelect,
@@ -83,6 +92,7 @@ import { Order } from '@/typings/order'
 export default class PageLogistOrders extends Vue {
   public enableInteractive = false
   public showCopyToolbar = false
+  public showFilterToolbar = false
 
   public columnTypes = {
     checkbox: ['express', 'payed'],
@@ -128,6 +138,30 @@ export default class PageLogistOrders extends Vue {
 
   get store() {
     return ordersModule
+  }
+
+  async onFilterChange(value: any) {
+    const enrichedFilter = map(value, (e, key) => {
+      if (key === 'status') {
+        let status = e
+        if (status === 'Любой') {
+          status = ['Новая', 'В работе', 'Закрыта', 'Не состоялась']
+        } else if (status === 'Новые') {
+          status = ['Новая', 'В работе']
+        } else if (status === 'Закрытые') {
+          status = ['Закрыта', 'Не состоялась']
+        } else {
+          status = [status]
+        }
+
+        return { type: 'in', key: 'status', value: status }
+      }
+    })
+    await this.store.updateOptions({
+      ...this.store.options,
+      filter: enrichedFilter,
+    })
+    await this.store.fetch()
   }
 
   async onCopy(id: string | number) {

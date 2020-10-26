@@ -2,13 +2,19 @@ import { mongoose } from '@typegoose/typegoose'
 import 'reflect-metadata'
 import { seedDatabase } from './seed'
 import RestApi from './RestApi'
-import { AuthenticationRouter, OrdersRouter, UsersRouter } from './routes'
+import { AuthenticationRouter, OrdersRouter, UsersRouter, AutocompleteRouter } from './routes'
 import { ClientRouter } from './routes/clientRoutes'
 import { validateEnv } from './utils'
 
 validateEnv()
 
-export const api = new RestApi([new AuthenticationRouter(), new OrdersRouter(), new UsersRouter(), new ClientRouter()])
+export const api = new RestApi([
+  new AuthenticationRouter(),
+  new OrdersRouter(),
+  new UsersRouter(),
+  new ClientRouter(),
+  new AutocompleteRouter(),
+])
 
 api.io.on('connection', (socket) => {
   console.log('connected socket')

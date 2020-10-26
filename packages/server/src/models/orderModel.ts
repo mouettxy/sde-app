@@ -1,15 +1,13 @@
 import { OrderInfo, OrderAddress, OrderRoutes, OrderPrice } from './sharedObjects'
-import { prop, plugin, getModelForClass, Ref, pre } from '@typegoose/typegoose'
+import { prop, plugin, getModelForClass, pre } from '@typegoose/typegoose'
 
 /* PLUGINS */
-import { AutoIncrement } from '../utils'
 import autopopulate from 'mongoose-autopopulate'
 import mongoosePaginate from 'mongoose-paginate-v2'
 import mongooseSearch from 'mongoose-partial-search'
 import { ClientModel } from './clientModel'
-import { User } from './userModel'
-import e from 'express'
-import { chain, compact, join, reduce } from 'lodash'
+import { UserModel } from './userModel'
+import { chain, compact, includes, join, reduce } from 'lodash'
 
 export const formatAddress = (address: OrderAddress) => {
   let phone = address.fields.phone
@@ -102,6 +100,24 @@ export const formatAddress = (address: OrderAddress) => {
     this.price = null
     this.route = null
     this.info = null
+
+    if (this.courier) {
+      const user = await UserModel.findOne({ username: this.courier })
+
+      if (user) {
+        this.courierCredentials = user.credentials
+      } else {
+        this.courierCredentials = 'Курьер удалён'
+      }
+    }
+  }
+
+  if (includes(['Закрыта', 'Не состоялась'], this.status)) {
+    this.closedAt = new Date()
+  }
+
+  if (includes(['В работе'], this.status)) {
+    this.inworkAt = new Date()
   }
 })
 @plugin(autopopulate)
@@ -111,6 +127,12 @@ export class Order {
 
   @prop({ default: '' })
   public month: string
+
+  @prop()
+  public closedAt: Date
+
+  @prop()
+  public inworkAt: Date
 
   @prop({})
   public date: Date

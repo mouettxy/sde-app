@@ -7,6 +7,7 @@ v-text-field.sde-input(
   :dense='dense',
   :color='color',
   :hint='hint',
+  @click:clear='clickClear',
   persistent-hint,
   hide-details='auto',
   clearable
@@ -33,6 +34,10 @@ export default class SdeInput extends Mixins(Colors) {
 
   set model(value: string) {
     this.$emit('input', value)
+  }
+
+  clickClear(evt: Event) {
+    this.$emit('click-clear', evt)
   }
 }
 </script>

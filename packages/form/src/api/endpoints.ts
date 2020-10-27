@@ -42,7 +42,12 @@ export class Client {
   public async login(login: string | number, password: string) {
     try {
       const response = await http.post(this.endpoints().login, { login, password })
-      return response.data
+
+      if (response.status === 200) {
+        return response.data
+      } else {
+        return false
+      }
     } catch (error) {
       return false
     }
@@ -60,7 +65,12 @@ export class Client {
   public async ping(id: string | number) {
     try {
       const response = await http.post(this.endpoints(id).ping)
-      return response.data
+
+      if (response.status === 200) {
+        return response.data
+      } else {
+        return false
+      }
     } catch (error) {
       return false
     }

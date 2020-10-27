@@ -7,18 +7,18 @@ const MiscAPI = new Misc(axiosInstance)
 const OrderAPI = new Order(http)
 
 export const userApi = {
-  login: ClientAPI.login,
-  ping: ClientAPI.ping,
-  get: ClientAPI.getById,
-  setOrder: ClientAPI.setOrder,
-  setAliases: ClientAPI.setAliases,
+  login: (login: string | number, password: string) => ClientAPI.login(login, password),
+  ping: (id: any) => ClientAPI.ping(id),
+  get: (id: string | number) => ClientAPI.getById(id),
+  setOrder: (id: string | number, data: any) => ClientAPI.setOrder(id, data),
+  setAliases: (id: string | number, data: any) => ClientAPI.setAliases(id, data),
 }
 
 export const addressesApi = {
-  suggestions: DadataAPi.get,
-  latLon: MiscAPI.geocode,
+  suggestions: (query: string) => DadataAPi.get(query),
+  latLon: (query: string) => MiscAPI.geocode(query),
 }
 
 export const ordersApi = {
-  send: OrderAPI.send,
+  send: (data: any) => OrderAPI.send(data),
 }

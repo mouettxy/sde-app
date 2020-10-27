@@ -6,45 +6,78 @@ v-slide-y-transition
         v-col(cols='12')
           v-textarea(
             v-model='info.comment',
-            @focus='onFieldFocus',
-            :color='defaultInputColor',
             :label='$t("addressInfo.commentLabel")',
+            :color='defaultInputColor',
             :hint='$t("addressInfo.commentHint")',
-            prepend-inner-icon='mdi-comment-edit',
-            rows='2'
+            @focus='onFieldFocus',
+            rows='2',
+            prepend-inner-icon='mdi-comment-edit'
           )
-        v-col(cols='12', lg='6', md='6')
+        v-col(
+          cols='12',
+          md='6',
+          lg='6'
+        )
           v-switch(
             v-model='info.quick',
-            :color='defaultInputColor',
-            :label='$t("addressInfo.quickLabelText") + $t("addressInfo.quickLabelPrice")'
+            :label='$t("addressInfo.quickLabelText") + $t("addressInfo.quickLabelPrice")',
+            :color='defaultInputColor'
           )
-            template(#label, v-if='!isMobile')
-              | {{$t("addressInfo.quickLabelText")}}
+            template(
+              v-if='!isMobile',
+              #label
+            )
+              | {{ $t("addressInfo.quickLabelText") }}
               br
-              | {{$t("addressInfo.quickLabelPrice")}}
-        v-col(cols='12', lg='6', md='6')
+              | {{ $t("addressInfo.quickLabelPrice") }}
+        v-col(
+          cols='12',
+          md='6',
+          lg='6'
+        )
           v-switch(
             v-model='info.car',
-            :color='defaultInputColor',
-            :label='$t("addressInfo.carLabelText") + $t("addressInfo.carLabelPrice")'
+            :label='$t("addressInfo.carLabelText") + $t("addressInfo.carLabelPrice")',
+            :color='defaultInputColor'
           )
-            template(#label, v-if='!isMobile')
-              | {{$t("addressInfo.carLabelText")}}
-              br
-              | {{$t("addressInfo.carLabelPrice")}}
-        v-col(cols='12', lg='6', md='6')
-          v-radio-group(v-model='info.whoPays', :color='defaultInputColor')
-            template(#label) {{$t("addressInfo.whoPaysTitle")}}
-            v-radio(
-              :color='defaultInputColor',
-              :label='$t("addressInfo.whoPays1")',
-              value='Из выручки',
-              :disabled='!isBuyoutExists'
+            template(
+              v-if='!isMobile',
+              #label
             )
-            v-radio(:color='defaultInputColor', :label='$t("addressInfo.whoPays2")', value='Отправитель')
-            v-radio(:color='defaultInputColor', :label='$t("addressInfo.whoPays3")', value='Получатель')
-            v-radio(:color='defaultInputColor', :label='$t("addressInfo.whoPays4")', value='Заказчик')
+              | {{ $t("addressInfo.carLabelText") }}
+              br
+              | {{ $t("addressInfo.carLabelPrice") }}
+        v-col(
+          cols='12',
+          md='6',
+          lg='6'
+        )
+          v-radio-group(
+            v-model='info.whoPays',
+            :color='defaultInputColor'
+          )
+            template(#label) {{ $t("addressInfo.whoPaysTitle") }}
+            v-radio(
+              :label='$t("addressInfo.whoPays1")',
+              :disabled='!isBuyoutExists',
+              :color='defaultInputColor',
+              value='Из выручки'
+            )
+            v-radio(
+              :label='$t("addressInfo.whoPays2")',
+              :color='defaultInputColor',
+              value='Отправитель'
+            )
+            v-radio(
+              :label='$t("addressInfo.whoPays3")',
+              :color='defaultInputColor',
+              value='Получатель'
+            )
+            v-radio(
+              :label='$t("addressInfo.whoPays4")',
+              :color='defaultInputColor',
+              value='Заказчик'
+            )
 </template>
 
 <script lang="ts">
@@ -62,7 +95,7 @@ export default class AddressInfo extends Mixins(colors, breakpoints) {
     car: false,
     comment: '',
     quick: false,
-    whoPays: 'Заказчик'
+    whoPays: 'Заказчик',
   }
 
   @Watch('info', { deep: true, immediate: true })

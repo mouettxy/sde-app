@@ -1,97 +1,138 @@
 <template lang="pug">
 .address-fields
-  .address-header.primary(:class='{"mobile": isMobile, "desktop": !isMobile}', ref='header')
-    slot(:on='showFields', :show='show')
+  .address-header.primary(
+    ref='header',
+    :class='{ mobile: isMobile, desktop: !isMobile }'
+  )
+    slot(
+      :show='show',
+      :on='showFields'
+    )
 
   v-slide-y-transition(mode='in-out')
     .address-main.pa-4(v-show='show')
       .address-main-buttons
-        slot(name='buttons', :remove='removeAddress')
+        slot(
+          name='buttons',
+          :remove='removeAddress'
+        )
       v-form(v-model='valid')
         v-row
-          v-col(cols='12', lg='6', md='6')
+          v-col(
+            cols='12',
+            md='6',
+            lg='6'
+          )
             v-text-field(
               ref='phoneField',
               v-model='fields.phone',
-              @focus='onFieldFocus',
-              :color='defaultInputColor',
               :label='$t("addressFields.phoneLabel")',
+              :color='defaultInputColor',
               :hint='$t("addressFields.phoneHint")',
+              @focus='onFieldFocus',
               v-mask='\'+7 (###) ###-##-##\'',
               prepend-inner-icon='mdi-phone',
               clearable
             )
-          v-col(cols='12', lg='6', md='6')
+          v-col(
+            cols='12',
+            md='6',
+            lg='6'
+          )
             v-datetime-picker(
               v-model='date',
-              @input='onDateChange',
-              @reset='onDateReset',
-              :label='$t("addressFields.datetimeLabel")',
-              :textFieldProps='{ "prepend-inner-icon": "mdi-calendar-clock", color: defaultInputColor, "v-model": fields.datetime }',
-              :datePickerProps='{ locale: `${$i18n.locale}-${$i18n.locale}`, "header-color": "accent" }',
               :timePickerProps='{ format: "24hr", "header-color": "accent" }',
-              :clearText='$t("addressFields.datetimeClear")',
+              :textFieldProps='{ "prepend-inner-icon": "mdi-calendar-clock", color: defaultInputColor, "v-model": fields.datetime }',
               :okText='$t("addressFields.datetimeApply")',
-              dateFormat='dd.MM.yyyy',
-              timeFormat='HH:mm'
+              :label='$t("addressFields.datetimeLabel")',
+              :datePickerProps='{ locale: `${$i18n.locale}-${$i18n.locale}`, "header-color": "accent" }',
+              :clearText='$t("addressFields.datetimeClear")',
+              @reset='onDateReset',
+              @input='onDateChange',
+              timeFormat='HH:mm',
+              dateFormat='dd.MM.yyyy'
             )
               template(slot='dateIcon')
                 v-icon mdi-calendar
               template(slot='timeIcon')
                 v-icon mdi-clock
         v-row
-          v-col(cols='12', lg='4', md='4')
+          v-col(
+            cols='12',
+            md='4',
+            lg='4'
+          )
             v-text-field(
               v-model.number='fields.buyout',
-              @focus='onFieldFocus',
-              :disabled="isBuyoutDisabled"
-              :color='defaultInputColor',
               :label='$t("addressFields.buyoutLabel")',
-              prepend-inner-icon='mdi-tray-minus',
-              type='number'
+              :disabled='isBuyoutDisabled',
+              :color='defaultInputColor',
+              @focus='onFieldFocus',
+              type='number',
+              prepend-inner-icon='mdi-tray-minus'
             )
-          v-col(cols='12', lg='4', md='4')
+          v-col(
+            cols='12',
+            md='4',
+            lg='4'
+          )
             v-text-field(
               v-model.number='fields.buyin',
-              @focus='onFieldFocus',
-              :color='defaultInputColor',
               :label='$t("addressFields.buyinLabel")',
-              prepend-inner-icon='mdi-tray-plus',
-              type='number'
+              :color='defaultInputColor',
+              @focus='onFieldFocus',
+              type='number',
+              prepend-inner-icon='mdi-tray-plus'
             )
-          v-col(cols='12', lg='4', md='4')
+          v-col(
+            cols='12',
+            md='4',
+            lg='4'
+          )
             v-text-field(
               v-model.number='fields.bundles',
-              @focus='onFieldFocus',
-              :color='defaultInputColor',
               :label='$t("addressFields.bundlesLabel")',
+              :color='defaultInputColor',
               :hint='$t("addressFields.bundlesHint")',
-              prepend-inner-icon='mdi-package-variant',
-              type='number'
+              @focus='onFieldFocus',
+              type='number',
+              prepend-inner-icon='mdi-package-variant'
             )
           v-col(cols='12')
             v-textarea(
               v-model='fields.comment',
-              @focus='onFieldFocus',
-              :color='defaultInputColor',
               :label='$t("addressFields.commentLabel")',
+              :color='defaultInputColor',
               :hint='$t("addressFields.commentHint")',
-              prepend-inner-icon='mdi-comment-edit',
-              rows='2'
+              @focus='onFieldFocus',
+              rows='2',
+              prepend-inner-icon='mdi-comment-edit'
             )
         v-row
           v-col(cols='6')
-            v-switch(:color='defaultInputColor', v-model='fields.takeIn', :label='$t("addressFields.takeInLabel")')
+            v-switch(
+              v-model='fields.takeIn',
+              :label='$t("addressFields.takeInLabel")',
+              :color='defaultInputColor'
+            )
           v-col(cols='6')
             v-switch(
-              :color='defaultInputColor',
               v-model='fields.takeOut',
+              :label='$t("addressFields.takeOutLabel")',
               :disabled='isLastAddress',
-              :label='$t("addressFields.takeOutLabel")'
+              :color='defaultInputColor'
             )
           v-col(cols='12')
-            v-switch(:color='defaultInputColor', v-model='fields.bus', :label='$t("addressFields.busLabel")')
-      v-btn(block, text, @click='showFields')
+            v-switch(
+              v-model='fields.bus',
+              :label='$t("addressFields.busLabel")',
+              :color='defaultInputColor'
+            )
+      v-btn(
+        @click='showFields',
+        text,
+        block
+      )
         v-icon mdi-arrow-up-drop-circle-outline
 </template>
 
@@ -108,8 +149,8 @@ import VDatetimePicker from '@/components/third-party/DatetimePicker.vue'
 
 @Component({
   components: {
-    VDatetimePicker
-  }
+    VDatetimePicker,
+  },
 })
 export default class AddressFields extends Mixins(colors, breakpoints) {
   @Ref('header') header: any
@@ -129,7 +170,7 @@ export default class AddressFields extends Mixins(colors, breakpoints) {
     datetime: '',
     phone: '',
     takeIn: false,
-    takeOut: false
+    takeOut: false,
   }
 
   @Watch('fields', { deep: true })
@@ -182,9 +223,7 @@ export default class AddressFields extends Mixins(colors, breakpoints) {
   }
 
   updateTimeField() {
-    const m = moment()
-      .locale('ru')
-      .add(this.getTimeOffset(), 'm')
+    const m = moment().locale('ru').add(this.getTimeOffset(), 'm')
     this.date = `${m.format('L')} ${m.format('LT')}`
     this.fields.datetime = `${m.format('L')} ${m.format('LT')}`
     return `${m.format('L')} ${m.format('LT')}`

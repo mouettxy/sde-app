@@ -11,10 +11,10 @@ Vue.use(VueTippy, {
   popperOptions: {
     modifiers: {
       preventOverflow: {
-        enabled: true
-      }
-    }
-  }
+        enabled: true,
+      },
+    },
+  },
 })
 
 Vue.component('tippy', TippyComponent)

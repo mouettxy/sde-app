@@ -2,26 +2,26 @@
 .user-addresses
   v-autocomplete(
     v-model='value',
-    @input='addOrder',
-    :color='defaultInputColor',
-    :filter='filter',
-    :items='addressList',
-    :search-input.sync='query',
     :success-messages='sucMsg',
-    hide-no-data,
+    :search-input.sync='query',
+    :menu-props='menuProps()',
+    :label='$t("userFavoriteAddresses.searchLabel")',
+    :items='addressList',
+    :filter='filter',
+    :color='defaultInputColor',
+    @input='addOrder',
+    type='search',
     item-value='id',
     item-text='name',
-    type='search',
-    autocomplete='chrome-off',
-    :menu-props='menuProps()',
-    :label='$t("userFavoriteAddresses.searchLabel")'
+    hide-no-data,
+    autocomplete='chrome-off'
   )
     template(v-slot:item='data')
       v-list-item-content
-        v-list-item-title {{data.item.name}}
+        v-list-item-title {{ data.item.name }}
         template(v-if='!isMobile')
           v-list-item-subtitle.ml-2
-            span(v-html='data.item.addresses').grey--text
+            span.grey--text(v-html='data.item.addresses')
 </template>
 
 <script lang="ts">
@@ -45,7 +45,7 @@ export default class UserFavoriteAddresses extends Mixins(colors, breakpoints) {
     return lodashMap(this.addresses, (e, index) => ({
       id: index,
       name: e.name,
-      addresses: getTrimmedAddressList(e.addressList)
+      addresses: getTrimmedAddressList(e.addressList),
     }))
   }
 
@@ -55,7 +55,7 @@ export default class UserFavoriteAddresses extends Mixins(colors, breakpoints) {
       closeOnContentClick: false,
       disableKeys: true,
       openOnClick: false,
-      maxHeight: 304
+      maxHeight: 304,
     } as any
 
     if (this.isMobile) {

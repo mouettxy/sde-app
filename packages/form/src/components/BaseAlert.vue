@@ -1,15 +1,21 @@
 <template lang="pug">
 v-alert.elevation-2.base__alert(
   v-if='!isHidden',
-  :color='type',
-  border='left',
-  text,
+  :transition='transition',
   :dismissible='!persistent',
-  :transition='transition'
+  :color='type',
+  text,
+  border='left'
 )
   slot
-  template(v-if='!persistent', v-slot:close='{toggle}')
-    v-btn(@click='closeAlert(toggle)', icon)
+  template(
+    v-if='!persistent',
+    v-slot:close='{ toggle }'
+  )
+    v-btn(
+      @click='closeAlert(toggle)',
+      icon
+    )
       v-icon(:color='type') mdi-close
 </template>
 

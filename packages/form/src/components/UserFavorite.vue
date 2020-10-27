@@ -2,16 +2,16 @@
 v-scroll-y-transition
   v-card.user-favorite.elevation-3(v-if='aliases.length > 0 || addresses.length > 0')
     v-tabs(
-      :background-color='defaultTabColor',
-      :color='defaultTabTextColor',
       :vertical='!isMobile',
-      next-icon='mdi-icon-right',
-      prev-icon='mdi-icon-left',
+      :color='defaultTabTextColor',
+      :background-color='defaultTabColor',
       show-arrows,
+      prev-icon='mdi-icon-left',
+      next-icon='mdi-icon-right',
       grow
     )
-      v-tab(v-if='aliases')#tour-aliases {{ $t("addresses") }}
-      v-tab(v-if='addresses')#tour-addresses {{ $t("orders") }}
+      v-tab#tour-aliases(v-if='aliases') {{ $t("addresses") }}
+      v-tab#tour-addresses(v-if='addresses') {{ $t("orders") }}
       v-tab-item.saved-data__addresses.pa-8(v-if='aliases')
         user-favorite-aliases(:aliases='aliases')
       v-tab-item.pa-8(v-if='addresses')
@@ -29,8 +29,8 @@ import UserFavoriteAliases from '@/components/UserFavoriteAliases.vue'
 @Component({
   components: {
     UserFavoriteAddresses,
-    UserFavoriteAliases
-  }
+    UserFavoriteAliases,
+  },
 })
 export default class UserFavorite extends Mixins(colors, breakpoints) {
   get aliases() {

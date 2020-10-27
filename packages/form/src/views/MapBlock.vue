@@ -1,9 +1,9 @@
 <template lang="pug">
 GmapMap.elevation-0(
   ref='map',
-  :class='{"mobile-map": isMobile, "desktop-map": !isMobile}',
   :options='mapOptions',
-  :center='{lat: lat, lng: lng}'
+  :class='{ "mobile-map": isMobile, "desktop-map": !isMobile }',
+  :center='{ lat: lat, lng: lng }'
 )
 </template>
 
@@ -18,7 +18,7 @@ import {
   each as lodashEach,
   round as lodashRound,
   isUndefined,
-  debounce
+  debounce,
 } from 'lodash'
 import { colors, breakpoints } from '@/mixins'
 import { addressesModule } from '@/store'
@@ -54,84 +54,84 @@ export default class MapBlock extends Mixins(colors, breakpoints) {
         {
           featureType: 'administrative.locality',
           elementType: 'labels.text.fill',
-          stylers: [{ color: '#d59563' }]
+          stylers: [{ color: '#d59563' }],
         },
         {
           featureType: 'poi',
           elementType: 'labels.text.fill',
-          stylers: [{ color: '#d59563' }]
+          stylers: [{ color: '#d59563' }],
         },
         {
           featureType: 'poi.park',
           elementType: 'geometry',
-          stylers: [{ color: '#263c3f' }]
+          stylers: [{ color: '#263c3f' }],
         },
         {
           featureType: 'poi.park',
           elementType: 'labels.text.fill',
-          stylers: [{ color: '#6b9a76' }]
+          stylers: [{ color: '#6b9a76' }],
         },
         {
           featureType: 'road',
           elementType: 'geometry',
-          stylers: [{ color: '#38414e' }]
+          stylers: [{ color: '#38414e' }],
         },
         {
           featureType: 'road',
           elementType: 'geometry.stroke',
-          stylers: [{ color: '#212a37' }]
+          stylers: [{ color: '#212a37' }],
         },
         {
           featureType: 'road',
           elementType: 'labels.text.fill',
-          stylers: [{ color: '#9ca5b3' }]
+          stylers: [{ color: '#9ca5b3' }],
         },
         {
           featureType: 'road.highway',
           elementType: 'geometry',
-          stylers: [{ color: '#746855' }]
+          stylers: [{ color: '#746855' }],
         },
         {
           featureType: 'road.highway',
           elementType: 'geometry.stroke',
-          stylers: [{ color: '#1f2835' }]
+          stylers: [{ color: '#1f2835' }],
         },
         {
           featureType: 'road.highway',
           elementType: 'labels.text.fill',
-          stylers: [{ color: '#f3d19c' }]
+          stylers: [{ color: '#f3d19c' }],
         },
         {
           featureType: 'transit',
           elementType: 'geometry',
-          stylers: [{ color: '#2f3948' }]
+          stylers: [{ color: '#2f3948' }],
         },
         {
           featureType: 'transit.station',
           elementType: 'labels.text.fill',
-          stylers: [{ color: '#d59563' }]
+          stylers: [{ color: '#d59563' }],
         },
         {
           featureType: 'water',
           elementType: 'geometry',
-          stylers: [{ color: '#17263c' }]
+          stylers: [{ color: '#17263c' }],
         },
         {
           featureType: 'water',
           elementType: 'labels.text.fill',
-          stylers: [{ color: '#515c6d' }]
+          stylers: [{ color: '#515c6d' }],
         },
         {
           featureType: 'water',
           elementType: 'labels.text.stroke',
-          stylers: [{ color: '#17263c' }]
-        }
+          stylers: [{ color: '#17263c' }],
+        },
       ]
     }
     return {
       zoom: 12,
       disableDefaultUI: true,
-      styles
+      styles,
     }
   }
   get google() {
@@ -149,25 +149,22 @@ export default class MapBlock extends Mixins(colors, breakpoints) {
   }
 
   getRoute(addresses: OrderAddress[], callback: Function) {
-    const addrs: OrderAddress[] = cloneDeep(addresses)
-    let origin = addrs.shift()
-    let destination = addrs.pop()
+    const addrs: OrderAddress[] | any = cloneDeep(addresses)
+    let origin: any = addrs.shift()
+    let destination: any = addrs.pop()
 
     if (isUndefined(origin) || isUndefined(destination)) {
       return false
     }
 
-    //@ts-ignore
     origin = { lat: parseFloat(origin.lat), lng: parseFloat(origin.lon) }
-    //@ts-ignore
     destination = { lat: parseFloat(destination.lat as string), lng: parseFloat(destination.lon as string) }
 
     const waypointsCount = lodashSize(addrs)
-    let waypoints: Array<any> = []
+    let waypoints: any = []
 
     if (waypointsCount > 0) {
       waypoints = lodashMap(addrs, (e) => {
-        //@ts-ignore
         return { location: { lat: parseFloat(e.lat), lng: parseFloat(e.lon) } }
       })
     }
@@ -178,11 +175,11 @@ export default class MapBlock extends Mixins(colors, breakpoints) {
           origin,
           waypoints,
           destination,
-          travelMode: 'DRIVING'
+          travelMode: 'DRIVING',
         },
         (response: any, status: any) => {
           return callback(response, status)
-        }
+        },
       )
     }
   }
@@ -201,7 +198,7 @@ export default class MapBlock extends Mixins(colors, breakpoints) {
             routes: [],
             overallDistance: 0,
             overallTime: 0,
-            overallTimeString: undefined
+            overallTimeString: undefined,
           } as any
 
           lodashEach(legs, (e) => {
@@ -214,7 +211,7 @@ export default class MapBlock extends Mixins(colors, breakpoints) {
               to: e.end_address,
               distance,
               time,
-              timeString
+              timeString,
             })
             routeInfo.overallDistance += distance
             routeInfo.overallTime += time
@@ -254,8 +251,8 @@ export default class MapBlock extends Mixins(colors, breakpoints) {
       {
         enableHighAccuracy: true,
         timeout: 5000,
-        maximumAge: 0
-      }
+        maximumAge: 0,
+      },
     )
 
     setInterval(() => {

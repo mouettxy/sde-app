@@ -32,9 +32,7 @@ export const eventBus = new Vue({
         addresses = cloneDeep(addresses)
 
         each(addresses, (e, index) => {
-          const m = moment()
-            .locale('ru')
-            .add(getTimeOffset(index), 'm')
+          const m = moment().locale('ru').add(getTimeOffset(index), 'm')
 
           e.fields.datetime = `${m.format('L')} ${m.format('LT')}`
         })
@@ -43,9 +41,7 @@ export const eventBus = new Vue({
       } else if (type === 'single') {
         addresses = cloneDeep(addresses)
 
-        const m = moment()
-          .locale('ru')
-          .add(getTimeOffset(index), 'm')
+        const m = moment().locale('ru').add(getTimeOffset(index), 'm')
 
         if (!isUndefined(addresses)) {
           addresses[index].fields.datetime = `${m.format('L')} ${m.format('LT')}`
@@ -53,8 +49,8 @@ export const eventBus = new Vue({
         }
         return ''
       }
-    }
-  }
+    },
+  },
 })
 
 export default eventBus

@@ -13,9 +13,9 @@ export const store = new Vuex.Store({
   state: {},
   modules: {
     auth,
-    addresses
+    addresses,
   },
-  plugins: [price]
+  plugins: [price],
 })
 
 export const authModule = getModule(auth, store)

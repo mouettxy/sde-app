@@ -2,25 +2,25 @@
 .user-aliases
   v-autocomplete(
     v-model='value',
-    @input='addAlias',
-    :color='defaultInputColor',
-    :filter='filter',
-    :items='aliasList',
-    :search-input.sync='query',
     :success-messages='sucMsg',
-    hide-no-data,
+    :search-input.sync='query',
+    :menu-props='menuProps()',
+    :label='$t("userFavoriteAliases.searchLabel")',
+    :items='aliasList',
+    :filter='filter',
+    :color='defaultInputColor',
+    @input='addAlias',
     type='search',
     item-value='id',
     item-text='name',
-    autocomplete='chrome-off',
-    :menu-props='menuProps()',
-    :label='$t("userFavoriteAliases.searchLabel")'
+    hide-no-data,
+    autocomplete='chrome-off'
   )
     template(v-slot:item='data')
       v-list-item-content
-        v-list-item-title {{data.item.name}}
+        v-list-item-title {{ data.item.name }}
         v-list-item-subtitle
-          | {{data.item.address}}
+          | {{ data.item.address }}
 </template>
 
 <script lang="ts">
@@ -41,7 +41,7 @@ export default class UserFavoriteAliases extends Mixins(colors, breakpoints) {
     return lodashMap(this.aliases, (e, index) => ({
       id: index,
       name: e.name,
-      address: e.address
+      address: e.address,
     }))
   }
 
@@ -51,7 +51,7 @@ export default class UserFavoriteAliases extends Mixins(colors, breakpoints) {
       closeOnContentClick: false,
       disableKeys: true,
       openOnClick: false,
-      maxHeight: 304
+      maxHeight: 304,
     } as any
 
     if (this.isMobile) {

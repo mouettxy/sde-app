@@ -8,7 +8,7 @@ Vue.use(GmapVue, {
     key: process.env.VUE_APP_GOOGLE_API_KEY,
     libraries: 'places,directions',
     region: locale === 'en' ? 'US' : 'RU',
-    language: locale ? locale : 'ru'
+    language: locale ? locale : 'ru',
   },
-  installComponents: true
+  installComponents: true,
 })

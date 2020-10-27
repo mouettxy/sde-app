@@ -1,8 +1,12 @@
 <template lang="pug">
-v-card.order-preview(:class='{"mobile": isMobile}')
+v-card.order-preview(:class='{ mobile: isMobile }')
   v-card-title
     .order-preview__header
-      v-btn(icon, @click='closePreview', size='60px')
+      v-btn(
+        @click='closePreview',
+        size='60px',
+        icon
+      )
         v-icon mdi-arrow-left
       span Оформление заявки
   v-card-text.order-preview__main
@@ -10,36 +14,64 @@ v-card.order-preview(:class='{"mobile": isMobile}')
       v-timeline(dense)
         v-timeline-item.order-preview__buttons(icon='mdi-check')
           v-card.pa-2
-            v-btn.my-2(color='primary', block, @click='sendOrder', :disabled='isOrderSending') {{$t("orderPreview.sendOrder")}}
+            v-btn.my-2(
+              :disabled='isOrderSending',
+              @click='sendOrder',
+              color='primary',
+              block
+            ) {{ $t("orderPreview.sendOrder") }}
             add-order-dialog(@save-start='closePreview')
               template(#buttons='{open}')
-                v-btn(color='primary', block, @click='open') {{ $t("orderField.btn") }}
+                v-btn(
+                  @click='open',
+                  color='primary',
+                  block
+                ) {{ $t("orderField.btn") }}
         v-timeline-item.order-preview__client(icon='mdi-account')
           v-card
             v-card-title.secondary.send-order__client-header.text-wrap
               template(v-if='isNewClient')
-                span {{$t("orderPreview.newClientDisclaimer")}}
+                span {{ $t("orderPreview.newClientDisclaimer") }}
               template(v-if='user && !isNewClient')
                 v-icon(color='#181818') mdi-account
-                span {{ user.CLIENT }} {{user.customer_name}}
+                span {{ user.CLIENT }} {{ user.customer_name }}
         v-timeline-item.send-order__address(
           v-for='address in addresses',
           :key='address.id',
-          fill-dot,
           small,
-          icon='mdi-map-marker'
+          icon='mdi-map-marker',
+          fill-dot
         )
           address-preview(:address='address')
-        v-timeline-item.send-order__info(fill-dot, small, icon='mdi-information', v-if='addresses')
+        v-timeline-item.send-order__info(
+          v-if='addresses',
+          small,
+          icon='mdi-information',
+          fill-dot
+        )
           address-info-preview(:info='information')
         v-timeline-item.send-order__price(icon='mdi-cash-marker')
-          address-prices-preview(:prices='prices', :routes='routes', :info='information', :user='user')
+          address-prices-preview(
+            :user='user',
+            :routes='routes',
+            :prices='prices',
+            :info='information'
+          )
         v-timeline-item.order-preview__buttons(icon='mdi-check')
           v-card.pa-2
-            v-btn.my-2(color='primary', block, @click='sendOrder', :disabled='isOrderSending') {{$t("orderPreview.sendOrder")}}
+            v-btn.my-2(
+              :disabled='isOrderSending',
+              @click='sendOrder',
+              color='primary',
+              block
+            ) {{ $t("orderPreview.sendOrder") }}
             add-order-dialog(@save-start='closePreview')
               template(#buttons='{open}')
-                v-btn(color='primary', block, @click='open') {{ $t("orderField.btn") }}
+                v-btn(
+                  @click='open',
+                  color='primary',
+                  block
+                ) {{ $t("orderField.btn") }}
 </template>
 
 <script lang="ts">
@@ -58,8 +90,8 @@ import AddressPricesPreview from '@/components/order-preview/AddressPricesPrevie
     AddOrderDialog,
     AddressInfoPreview,
     AddressPreview,
-    AddressPricesPreview
-  }
+    AddressPricesPreview,
+  },
 })
 export default class OrderPreview extends Mixins(colors, breakpoints) {
   public isOrderSending = false

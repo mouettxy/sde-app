@@ -13,7 +13,7 @@ export default class Breakpoints extends Vue {
       lg: a.lg,
       md: a.md,
       sm: a.sm,
-      xs: a.xs
+      xs: a.xs,
     }
   }
 }

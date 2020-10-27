@@ -8,7 +8,7 @@ Vue.use(Vuetify, {
     VNavigationDrawer,
     VFooter,
     VToolbar,
-    VFadeTransition
+    VFadeTransition,
   },
   directives: {
     Ripple,
@@ -17,8 +17,8 @@ Vue.use(Vuetify, {
     Mutate,
     Resize,
     Scroll,
-    Touch
-  }
+    Touch,
+  },
 })
 
 const vuetifyOpts = {
@@ -26,7 +26,7 @@ const vuetifyOpts = {
   theme: {
     dark: false,
     options: {
-      customProperties: true
+      customProperties: true,
     },
     themes: {
       dark: {
@@ -39,7 +39,7 @@ const vuetifyOpts = {
         warning: '#FB8C00',
         error: '#FF5252',
         dark: '#181818',
-        light: '#fafafa'
+        light: '#fafafa',
       },
       light: {
         primary: '#FFCC01',
@@ -51,10 +51,10 @@ const vuetifyOpts = {
         warning: '#FB8C00',
         error: '#FF5252',
         dark: '#181818',
-        light: '#fafafa'
-      }
-    }
-  }
+        light: '#fafafa',
+      },
+    },
+  },
 }
 
 Vue.use(Vuetify)

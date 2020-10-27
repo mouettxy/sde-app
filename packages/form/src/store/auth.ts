@@ -48,7 +48,7 @@ export type RelogInput = {
 
 @Module({
   name: 'auth',
-  namespaced: true
+  namespaced: true,
 })
 export default class Auth extends VuexModule {
   public user: User | string | null = null

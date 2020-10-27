@@ -7,6 +7,7 @@ export interface NotificationPluginOptions {
   type: string
   showLeftIcn: boolean
   showCloseIcn: boolean
+  notificationEl: any
   animateIn(): TimelineMax
   animateOut(): TimelineMax
 }

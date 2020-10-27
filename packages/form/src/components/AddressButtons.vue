@@ -2,11 +2,26 @@
 v-slide-y-transition
   .address-buttons
     template(v-if='pricesOverall')
-      v-btn(color='primary', block, @click='$emit("preview")', :disabled='inTour() || isOrderSending')#tour-preview-btn {{ $t("orderButtons.preview") }}
-      v-btn(color='primary', block, @click='sendOrder', :disabled='inTour() || isOrderSending')#tour-send-btn {{ $t("orderButtons.send") }}
+      v-btn#tour-preview-btn(
+        :disabled='inTour() || isOrderSending',
+        @click='$emit("preview")',
+        color='primary',
+        block
+      ) {{ $t("orderButtons.preview") }}
+      v-btn#tour-send-btn(
+        :disabled='inTour() || isOrderSending',
+        @click='sendOrder',
+        color='primary',
+        block
+      ) {{ $t("orderButtons.send") }}
       add-order-dialog
         template(#buttons='{open}')
-          v-btn(color='primary', block, @click='open', :disabled='inTour() || isOrderSending')#tour-save-btn {{ $t("orderButtons.save") }}
+          v-btn#tour-save-btn(
+            :disabled='inTour() || isOrderSending',
+            @click='open',
+            color='primary',
+            block
+          ) {{ $t("orderButtons.save") }}
 </template>
 
 <script lang="ts">
@@ -17,8 +32,8 @@ import AddOrderDialog from '@/components/dialogs/AddOrderDialog.vue'
 import { addressesModule } from '@/store'
 @Component({
   components: {
-    AddOrderDialog
-  }
+    AddOrderDialog,
+  },
 })
 export default class AddressButtons extends Vue {
   public isOrderSending = false

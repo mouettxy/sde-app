@@ -1,24 +1,38 @@
 <template lang="pug">
 .add-alias-dialog
-  v-dialog(v-model='value', max-width='50%', :fullscreen='isMobile', transition='dialog-bottom-transition')
+  v-dialog(
+    v-model='value',
+    :fullscreen='isMobile',
+    transition='dialog-bottom-transition',
+    max-width='50%'
+  )
     v-card
       v-card-title
         span {{ $t("aliasField.header") }}
         v-spacer
-        v-btn(icon, @click='value = false')
+        v-btn(
+          @click='value = false',
+          icon
+        )
           v-icon mdi-close
       v-card-text
         v-form(@submit.prevent='addAlias')
           v-text-field(
             v-model='aliasName',
             :label='$t("aliasField.label")',
-            :hint='$t("aliasField.hint")',
-            autocomplete='chrome-off',
             :error-messages='errMsg',
-            :color='defaultInputColor'
+            :color='defaultInputColor',
+            :hint='$t("aliasField.hint")',
+            autocomplete='chrome-off'
           )
-          v-btn(@click='addAlias', color='primary') {{$t("aliasField.btn")}}
-  slot(name='button', :open='openDialog')
+          v-btn(
+            @click='addAlias',
+            color='primary'
+          ) {{ $t("aliasField.btn") }}
+  slot(
+    name='button',
+    :open='openDialog'
+  )
 </template>
 
 <script lang="ts">
@@ -48,7 +62,7 @@ export default class AddAliasDialog extends Mixins(breakpoints, colors) {
     if (
       includes(
         map(authModule.aliases, (e) => e.name),
-        this.aliasName
+        this.aliasName,
       )
     ) {
       this.$notification.error('Адрес с таким названием уже существует')
@@ -66,7 +80,7 @@ export default class AddAliasDialog extends Mixins(breakpoints, colors) {
       name: this.aliasName,
       address: this.alias.address,
       lat: this.alias.lat,
-      lon: this.alias.lon
+      lon: this.alias.lon,
     })
 
     if (status) {

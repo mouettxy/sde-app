@@ -1,11 +1,11 @@
 <template lang="pug">
-.price-label.elevation-12(:class='{"desktop": isMobile, "mobile": !isMobile}')
+.price-label.elevation-12(:class='{ desktop: isMobile, mobile: !isMobile }')
   animated-number.price.black--text(
-    :color='defaultInputColor',
-    easing='easeInOutSine',
     :value='pricesOverall',
+    :formatValue='formatToPrice',
     :duration='800',
-    :formatValue='formatToPrice'
+    :color='defaultInputColor',
+    easing='easeInOutSine'
   )
   v-icon.black--text(size='2rem') mdi-currency-rub
 </template>
@@ -19,8 +19,8 @@ import AnimatedNumber from 'animated-number-vue'
 
 @Component({
   components: {
-    AnimatedNumber
-  }
+    AnimatedNumber,
+  },
 })
 export default class PriceLabel extends Mixins(colors, breakpoints) {
   get pricesOverall() {

@@ -1,23 +1,23 @@
 <template lang="pug">
 .address-search
   v-autocomplete(
-    v-model='value',
-    @input='onInput',
     ref='addressInput',
-    :loading='isLoading',
-    :items='suggestions',
-    :search-input.sync='query',
-    :error-messages='errMsg',
+    v-model='value',
     :success-messages='sucMsg',
-    :color='defaultInputColor',
-    prepend-inner-icon='mdi-map-marker',
-    append-icon='mdi-magnify',
-    hide-no-data,
-    no-filter,
-    persistent-hint,
+    :search-input.sync='query',
     :menu-props='menuProps()',
+    :loading='isLoading',
+    :label='$t("addressField.label")',
+    :items='suggestions',
+    :error-messages='errMsg',
+    :color='defaultInputColor',
     :hint='$t("addressField.hint")',
-    :label='$t("addressField.label")'
+    @input='onInput',
+    prepend-inner-icon='mdi-map-marker',
+    persistent-hint,
+    no-filter,
+    hide-no-data,
+    append-icon='mdi-magnify'
   )
 </template>
 
@@ -65,12 +65,12 @@ export default class AddressField extends Mixins(colors, breakpoints) {
         geocoderResponse: {},
         suggestion: entry.data,
         lat: entry.data.geo_lat,
-        lon: entry.data.geo_lon
+        lon: entry.data.geo_lon,
       }
       const address = entry.value
       const suggestion = {
         value: information,
-        text: address
+        text: address,
       }
       return Object.assign({}, suggestion)
     })
@@ -101,7 +101,7 @@ export default class AddressField extends Mixins(colors, breakpoints) {
       closeOnContentClick: false,
       disableKeys: true,
       openOnClick: false,
-      maxHeight: 180
+      maxHeight: 180,
     } as any
 
     if (this.isMobile) {
@@ -129,7 +129,7 @@ export default class AddressField extends Mixins(colors, breakpoints) {
       if (response) {
         this.value = {
           ...this.value,
-          ...response
+          ...response,
         }
       } else {
         this.reset()
@@ -141,7 +141,7 @@ export default class AddressField extends Mixins(colors, breakpoints) {
     const address = {
       ...this.value,
       isAlias: false,
-      completed: false
+      completed: false,
     }
 
     const status = await addressesModule.add(address)

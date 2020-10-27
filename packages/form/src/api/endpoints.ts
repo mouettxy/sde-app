@@ -9,13 +9,13 @@ export default {
     renewToken: `client/${id}/token`,
     replaceAliases: `client/${id}/aliases/replace`,
     replaceOrders: `client/${id}/orders/replace`,
-    saveOrder: `client/${id}/orders/`
+    saveOrder: `client/${id}/orders/`,
   }),
   addresses: {
     suggestions: '/address',
-    geocoder: '/3'
+    geocoder: '/3',
   },
   orders: {
-    send: '/order/'
-  }
+    send: '/order/',
+  },
 }

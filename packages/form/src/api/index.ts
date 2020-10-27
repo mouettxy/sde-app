@@ -42,27 +42,27 @@ export const renewToken = async (id: number | string) => {
 /*                                ADDRESSES API                               */
 /* -------------------------------------------------------------------------- */
 
-export const getSuggestions = async function(query: string) {
+export const getSuggestions = async function (query: string) {
   const locations = [
     {
-      region: 'Краснодарский'
+      region: 'Краснодарский',
     },
     {
-      region: 'Адыгея'
+      region: 'Адыгея',
     },
     {
-      region: 'Крым'
+      region: 'Крым',
     },
     {
-      region: 'Севастополь'
+      region: 'Севастополь',
     },
     {
-      region: 'Санкт-Петербург'
-    }
+      region: 'Санкт-Петербург',
+    },
   ]
   const response = await dadata.post(endpoints.addresses.suggestions, {
     query,
-    locations
+    locations,
   })
 
   if (response.status === 200) {
@@ -72,12 +72,12 @@ export const getSuggestions = async function(query: string) {
   }
 }
 
-export const getLatLon = async function(address: string) {
+export const getLatLon = async function (address: string) {
   const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
     params: {
       address: address,
-      key: 'AIzaSyCfgtxr_hEtON5EuNEoQA0vpJOSdXs-lJU'
-    }
+      key: 'AIzaSyCfgtxr_hEtON5EuNEoQA0vpJOSdXs-lJU',
+    },
   })
 
   const coordinates = response.data['results'][0]['geometry']['location']
@@ -88,7 +88,7 @@ export const getLatLon = async function(address: string) {
 
   return {
     lat: coordinates.lat,
-    lon: coordinates.lng
+    lon: coordinates.lng,
   }
 }
 
@@ -130,16 +130,16 @@ export const clientApi = {
   loginClient,
   renewToken,
   saveOrder,
-  setAliases
+  setAliases,
 }
 
 export const addressesApi = {
   getSuggestions,
-  getLatLon
+  getLatLon,
 }
 
 export const ordersApi = {
-  sendOrder
+  sendOrder,
 }
 
 export default {
@@ -149,5 +149,5 @@ export default {
   renewToken,
   getSuggestions,
   saveOrder,
-  sendOrder
+  sendOrder,
 }

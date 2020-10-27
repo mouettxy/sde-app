@@ -5,7 +5,7 @@ import {
   OrderInformation as Information,
   OrderPrices as Prices,
   OrderRoute,
-  OrderRoute as Route
+  OrderRoute as Route,
 } from '@/typings/order'
 import {
   filter as lodashFilter,
@@ -15,7 +15,7 @@ import {
   each,
   findLastIndex,
   cloneDeep,
-  map
+  map,
 } from 'lodash'
 import { authModule } from '.'
 import { formatData, formatPhoneNumber } from '@/helpers'
@@ -26,7 +26,7 @@ import i18n from '@/i18n'
 
 @Module({
   name: 'addresses',
-  namespaced: true
+  namespaced: true,
 })
 export default class Addresses extends VuexModule {
   public addresses: Address[] = []
@@ -76,7 +76,7 @@ export default class Addresses extends VuexModule {
         datetime: '',
         phone: phoneNumber ? phoneNumber : '',
         takeIn: false,
-        takeOut: false
+        takeOut: false,
       }
 
       payload.isAlias = true
@@ -105,7 +105,7 @@ export default class Addresses extends VuexModule {
               buyout: 0,
               takeIn: false,
               takeOut: false,
-              bus: false
+              bus: false,
             }
           }
           if (i === 0 && alwaysOut) {
@@ -198,7 +198,7 @@ export default class Addresses extends VuexModule {
                 whoPays: user.payment_who,
                 car: false,
                 comment: '',
-                quick: false
+                quick: false,
               })
             }
           }
@@ -211,7 +211,7 @@ export default class Addresses extends VuexModule {
         whoPays: 'Заказчик',
         car: false,
         comment: '',
-        quick: false
+        quick: false,
       })
     }
   }
@@ -272,7 +272,7 @@ export default class Addresses extends VuexModule {
               id: e.id,
               lat: e.lat,
               lon: e.lon,
-              name: e.name
+              name: e.name,
             }
           } else {
             return {
@@ -281,12 +281,12 @@ export default class Addresses extends VuexModule {
               isAlias: e.isAlias,
               id: e.id,
               lat: e.lat,
-              lon: e.lon
+              lon: e.lon,
             }
           }
         }),
         addressInfo: cloneDeep(this.information),
-        route: cloneDeep(this.routes)
+        route: cloneDeep(this.routes),
       }
 
       const response = await apiSaveOrder(state, (authModule.user as User).CLIENT)
@@ -296,7 +296,7 @@ export default class Addresses extends VuexModule {
         await this.context.dispatch('reset')
         return Promise.resolve({
           status: 'OK-SAVED',
-          message: `${i18n.t('notifications.orderSuccessSaveSent')} ${send}`
+          message: `${i18n.t('notifications.orderSuccessSaveSent')} ${send}`,
         })
       } else {
         return Promise.resolve({ status: 'ERROR-SAVED', message: i18n.t('notifications.orderErrorSave') as string })
@@ -316,7 +316,7 @@ export default class Addresses extends VuexModule {
           this.context.dispatch('reset')
           return Promise.resolve({
             status: 'OK',
-            message: `${i18n.t('notifications.orderSuccessSent')} ${response}`
+            message: `${i18n.t('notifications.orderSuccessSent')} ${response}`,
           })
         } else {
           return Promise.resolve({ status: 'ERROR', message: i18n.t('notifications.orderErrorServer') as string })

@@ -5,5 +5,5 @@ export { colors, breakpoints }
 
 export default {
   colors,
-  breakpoints
+  breakpoints,
 }

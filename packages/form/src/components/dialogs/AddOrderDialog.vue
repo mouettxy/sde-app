@@ -1,25 +1,39 @@
 <template lang="pug">
 .add-order-dialog
-  v-dialog(v-model='value', max-width='50%', :fullscreen='isMobile', transition='dialog-bottom-transition')
+  v-dialog(
+    v-model='value',
+    :fullscreen='isMobile',
+    transition='dialog-bottom-transition',
+    max-width='50%'
+  )
     v-card
       v-card-title
         span {{ $t("orderField.header") }}
         v-spacer
-        v-btn(icon, @click='value = false')
+        v-btn(
+          @click='value = false',
+          icon
+        )
           v-icon mdi-close
       v-card-text
-        h4.error--text {{$t("orderField.disclaimer")}}
+        h4.error--text {{ $t("orderField.disclaimer") }}
         v-form(@submit.prevent='saveOrder')
           v-text-field(
             v-model='orderName',
-            :color='defaultInputColor',
             :label='$t("orderField.label")',
+            :color='defaultInputColor',
             :hint='$t("orderField.hint")',
-            auocomplete='chrome-off',
-            prepend-inner-icon='mdi-content-save'
+            prepend-inner-icon='mdi-content-save',
+            auocomplete='chrome-off'
           )
-          v-btn(@click='saveOrder', color='primary') {{$t("orderField.btn")}}
-  slot(name='buttons', :open='openDialog')
+          v-btn(
+            @click='saveOrder',
+            color='primary'
+          ) {{ $t("orderField.btn") }}
+  slot(
+    name='buttons',
+    :open='openDialog'
+  )
 </template>
 
 <script lang="ts">
@@ -46,7 +60,7 @@ export default class AddOrderDialog extends Mixins(breakpoints, colors) {
     if (
       includes(
         map(authModule.addresses, (e) => e.name),
-        this.orderName
+        this.orderName,
       )
     ) {
       this.$notification.error('Сохранённая заявка с таким названием уже существует')

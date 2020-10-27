@@ -8,7 +8,10 @@
         address-picker
         address-info
         address-buttons(@preview='toPreview')
-  v-slide-y-reverse-transition(leave-absolute, mode='out-in')
+  v-slide-y-reverse-transition(
+    mode='out-in',
+    leave-absolute
+  )
     template(v-if='state === "preview"')
       order-preview(@back='fromPreview')
   .vertical-spacer
@@ -35,8 +38,8 @@ import eventBus from '@/eventBus'
     AddressPicker,
     AddressInfo,
     AddressButtons,
-    OrderPreview
-  }
+    OrderPreview,
+  },
 })
 export default class OrderView extends Mixins(colors, breakpoints) {
   @Prop(String) state?: string

@@ -126,8 +126,8 @@ import { OrderAddress } from './typings/order'
   components: {
     OrderView,
     PriceLabel,
-    MapBlock
-  }
+    MapBlock,
+  },
 })
 export default class App extends Mixins(colors, breakpoints) {
   public menu = false
@@ -137,88 +137,88 @@ export default class App extends Mixins(colors, breakpoints) {
     {
       target: '#tour-footer-home',
       header: { title: 'Базовые настройки' },
-      content: 'Нажмите, и адрес "От нас" будет всегда выставляться из вашего аккаунта.'
+      content: 'Нажмите, и адрес "От нас" будет всегда выставляться из вашего аккаунта.',
     },
     {
       target: '#tour-footer-theme',
       header: { title: 'Базовые настройки' },
-      content: 'Смените тему, иногда это может быть удобно!'
+      content: 'Смените тему, иногда это может быть удобно!',
     },
     {
       target: '#tour-footer-lang',
       header: { title: 'Базовые настройки' },
-      content: 'Смена языка / Change language.'
+      content: 'Смена языка / Change language.',
     },
     {
       target: '#tour-aliases',
       header: {
-        title: 'Заполняйте быстрее!'
+        title: 'Заполняйте быстрее!',
       },
       content: 'Удобный поиск по вашим сохранённым адресам.',
       params: {
         enableScrolling: false,
-        placement: 'bottom'
-      }
+        placement: 'bottom',
+      },
     },
     {
       target: '#tour-addresses',
       header: {
-        title: 'Заполняйте быстрее!'
+        title: 'Заполняйте быстрее!',
       },
       content: 'Удобный поиск по вашим сохранённым заявкам.',
       params: {
         enableScrolling: false,
-        placement: 'bottom'
-      }
+        placement: 'bottom',
+      },
     },
     {
       target: '#tour-add-address',
       header: {
-        title: 'Добавление адресов'
+        title: 'Добавление адресов',
       },
       params: {
         enableScrolling: true,
-        placement: 'top'
+        placement: 'top',
       },
       content:
-        'Добавьте адрес во всплывающем окне. Во время тура мы добавили два адреса за вас. Они будут удалены когда вы закроете тур.'
+        'Добавьте адрес во всплывающем окне. Во время тура мы добавили два адреса за вас. Они будут удалены когда вы закроете тур.',
     },
     {
       target: '#tour-address-move',
       header: {
-        title: 'Работа с адресами'
+        title: 'Работа с адресами',
       },
-      content: 'Изменяйте порядок адресов просто передвигая их!'
+      content: 'Изменяйте порядок адресов просто передвигая их!',
     },
     {
       target: '#tour-address-settings',
       header: {
-        title: 'Работа с адресами'
+        title: 'Работа с адресами',
       },
-      content: 'Привычные вам поля адреса скрыты по умолчанию. Вы можете открыть или закрыть их по этой кнопке.'
+      content: 'Привычные вам поля адреса скрыты по умолчанию. Вы можете открыть или закрыть их по этой кнопке.',
     },
     {
       target: '#tour-preview-btn',
       header: {
-        title: 'Проверьте правильность'
+        title: 'Проверьте правильность',
       },
-      content: 'В предпросмотре вы можете увидеть все заполненные поля и цены. Проверьте всё ли вы заполнили верно!'
+      content: 'В предпросмотре вы можете увидеть все заполненные поля и цены. Проверьте всё ли вы заполнили верно!',
     },
     {
       target: '#tour-send-btn',
       header: {
-        title: 'Отправьте заявку'
+        title: 'Отправьте заявку',
       },
-      content: 'Всё правильно? Отправляйте заявку! Наши экспедиторы доставят всё точно в срок.'
+      content: 'Всё правильно? Отправляйте заявку! Наши экспедиторы доставят всё точно в срок.',
     },
     {
       target: '#tour-save-btn',
       header: {
-        title: 'Сохраните заявку'
+        title: 'Сохраните заявку',
       },
       content:
-        'Хотите не только отправить, но и сохранить заявку для дальнейшего использования? Просто дайте ей имя во всплывающем окне, и мы сохраним её в вашем аккаунте.'
-    }
+        'Хотите не только отправить, но и сохранить заявку для дальнейшего использования? Просто дайте ей имя во всплывающем окне, и мы сохраним её в вашем аккаунте.',
+    },
   ]
 
   @Watch('breakpoints')
@@ -245,8 +245,8 @@ export default class App extends Mixins(colors, breakpoints) {
         buttonSkip: this.$t('tour.btnSkip'),
         buttonPrevious: this.$t('tour.btnPrevious'),
         buttonNext: this.$t('tour.btnNext'),
-        buttonStop: this.$t('tour.btnStop')
-      }
+        buttonStop: this.$t('tour.btnStop'),
+      },
     }
   }
 
@@ -263,18 +263,18 @@ export default class App extends Mixins(colors, breakpoints) {
                   from: 'ул. имени Артюшкова, 15, Краснодар, Краснодарский край, Россия, 350016',
                   time: 8,
                   distance: 3.8,
-                  timeString: '8 м.'
-                }
+                  timeString: '8 м.',
+                },
               ],
               overallTime: 8,
               overallDistance: 3.8,
-              overallTimeString: '8 м.'
+              overallTimeString: '8 м.',
             },
             addressInfo: {
               car: false,
               quick: false,
               comment: 'Заявка из тура по форме.',
-              whoPays: 'Заказчик'
+              whoPays: 'Заказчик',
             },
             addressList: [
               {
@@ -291,10 +291,10 @@ export default class App extends Mixins(colors, breakpoints) {
                   bundles: 0,
                   comment: 'Главный офис SDE',
                   takeOut: true,
-                  datetime: '18.09.2020 14:53'
+                  datetime: '18.09.2020 14:53',
                 },
                 address: 'г Краснодар, ул им. Артюшкова В.Д., д 15',
-                isAlias: true
+                isAlias: true,
               },
               {
                 id: 2,
@@ -309,18 +309,18 @@ export default class App extends Mixins(colors, breakpoints) {
                   bundles: 0,
                   comment: '',
                   takeOut: false,
-                  datetime: '18.09.2020 15:28'
+                  datetime: '18.09.2020 15:28',
                 },
                 address: 'г Краснодар, ул им. Гаврилова П.М., д 100',
-                isAlias: false
-              }
-            ]
+                isAlias: false,
+              },
+            ],
           })
         }
       },
       onSkip: () => {
         addressesModule.reset()
-      }
+      },
     }
   }
 

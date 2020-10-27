@@ -3,32 +3,32 @@ v-card.elevation-3.auth__field
   v-form
     v-scroll-y-transition
       v-text-field(
-        :class='{"password": showPassword}',
         v-if='!isLoggedIn',
-        prepend-inner-icon='mdi-account',
-        :loading='isLoading',
-        :success-messages='sucMsg',
-        :error-messages='errMsg',
         v-model='login',
+        :success-messages='sucMsg',
+        :loading='isLoading',
+        :label='$t("loginLabel")',
+        :error-messages='errMsg',
         :color='defaultInputColor',
-        persistent-hint,
-        autocomplete='sde_login_form_hsvv',
+        :class='{ password: showPassword }',
         :hint='$t("loginHint")',
-        :label='$t("loginLabel")'
+        prepend-inner-icon='mdi-account',
+        persistent-hint,
+        autocomplete='sde_login_form_hsvv'
       )
     v-scroll-y-transition
       v-text-field.pb-4(
         v-if='showPassword',
-        prepend-inner-icon='mdi-lock',
-        append-icon='mdi-login',
+        v-model='password',
+        :label='$t("passwordLabel")',
+        :color='defaultInputColor',
+        :hint='$t("passwordHint")',
         @click:append='auth',
         type='password',
-        v-model='password',
-        :color='defaultInputColor',
+        prepend-inner-icon='mdi-lock',
         persistent-hint,
         autocomplete='sde_password_form_mxxt',
-        :hint='$t("passwordHint")',
-        :label='$t("passwordLabel")'
+        append-icon='mdi-login'
       )
   v-slide-y-transition
     template(v-if='isLoggedIn')
@@ -40,7 +40,12 @@ v-card.elevation-3.auth__field
             v-list-item-title {{ `${$t("authIdText")} ${user.CLIENT}.` }}
             v-list-item-subtitle {{ `${$t("authUserText")} ${user.customer_name}.` }}
           v-list-item-action
-            v-btn(icon, @click='logout', :content='$t("logoutButtonTip")', v-tippy)
+            v-btn(
+              :content='$t("logoutButtonTip")',
+              @click='logout',
+              v-tippy,
+              icon
+            )
               v-icon mdi-close
   v-slide-y-transition
     template(v-if='isLoggedIn')
@@ -50,7 +55,10 @@ v-card.elevation-3.auth__field
             .text-subtitle-1 Быстрый тур по новой форме. Мы покажем и расскажем как тут всё теперь работает!
         v-row
           v-col
-            v-btn(color='info', @click='getTour') Хочу узнать!
+            v-btn(
+              @click='getTour',
+              color='info'
+            ) Хочу узнать!
 </template>
 
 <script lang="ts">
@@ -63,8 +71,8 @@ import BaseAlert from '@/components/BaseAlert.vue'
 
 @Component({
   components: {
-    BaseAlert
-  }
+    BaseAlert,
+  },
 })
 export default class ClientField extends Mixins(colors) {
   private debounced?: any
@@ -119,7 +127,7 @@ export default class ClientField extends Mixins(colors) {
     const response = await authModule.login({
       type: 'default',
       login: this.login,
-      password: this.password
+      password: this.password,
     })
 
     if (response.type === 'error') {

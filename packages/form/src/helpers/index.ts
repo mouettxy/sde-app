@@ -35,9 +35,9 @@ export const formatAddress = (address: OrderAddress) => {
       address.fields.takeOut ? 'вынос' : false,
       address.fields.buyin ? `выкуп(${address.fields.buyin})` : false,
       address.fields.buyout ? `выручка(${address.fields.buyout})` : false,
-      address.fields.bundles ? `наборов ${address.fields.bundles}` : false
+      address.fields.bundles ? `наборов ${address.fields.bundles}` : false,
     ]),
-    ', '
+    ', ',
   )
 
   const c = b ? `${a} (${b})` : a
@@ -49,9 +49,8 @@ export const formatData = (
   addresses: OrderAddress[],
   info: OrderInformation | null,
   routes: OrderRoute | null,
-  prices: OrderPrices | null
+  prices: OrderPrices | null,
 ) => {
-  /* eslint-disable @typescript-eslint/camelcase */
   const fields = (id: number) => {
     return addresses[id].fields
   }
@@ -71,21 +70,14 @@ export const formatData = (
       r += v.fields.buyout
       return r
     },
-    0
+    0,
   )
 
   const processed = {
     комментарий_загрузки: '',
-    месяц: moment()
-      .locale('ru')
-      .startOf('month')
-      .format('L'),
-    дата: moment()
-      .locale('ru')
-      .format('L'),
-    время_заявки: moment()
-      .locale('ru')
-      .format('LTS'),
+    месяц: moment().locale('ru').startOf('month').format('L'),
+    дата: moment().locale('ru').format('L'),
+    время_заявки: moment().locale('ru').format('LTS'),
     время_подачи: fields(0).datetime || '',
     время_выполнения: fields(size(addresses) - 1).datetime || '',
     откуда: from,
@@ -107,7 +99,7 @@ export const formatData = (
     стоимость: prices?.overall || '',
     стоимость_со_скидкой: prices?.discounted || prices?.overall || '',
     выручка: buyin,
-    комментарий: info?.comment || ''
+    комментарий: info?.comment || '',
   }
 
   const id = 'id'
@@ -148,7 +140,7 @@ export const formatData = (
         ? compact([
             addresses[id].fields.takeIn ? 'Занос' : '',
             addresses[id].fields.takeOut ? 'Вынос' : '',
-            addresses[id].fields.bus ? 'Встретить или отправить автобус' : ''
+            addresses[id].fields.bus ? 'Встретить или отправить автобус' : '',
           ]).join('; ')
         : ''
     }
@@ -203,7 +195,7 @@ export const formatData = (
     viruchka_kuda_2: rawTag`${id} fields.buyin`,
     viruchka_kuda_3: rawTag`${id} fields.buyin`,
     viruchka_kuda_4: rawTag`${id} fields.buyin`,
-    viruchka_kuda_5: rawTag`${id} fields.buyin`
+    viruchka_kuda_5: rawTag`${id} fields.buyin`,
   }
 
   const rawMappingsModified: any = {}
@@ -220,20 +212,13 @@ export const formatData = (
     srochno: info?.quick || '',
     summ_pay: buyin || '',
     car: info?.car ? 'Требуется автомобиль' : '',
-    ...rawMappingsModified
+    ...rawMappingsModified,
   }
 
   const modern = {
-    month: moment()
-      .locale('ru')
-      .startOf('month')
-      .format('L'),
-    date: moment()
-      .locale('ru')
-      .format('L'),
-    orderTime: moment()
-      .locale('ru')
-      .format('LTS'),
+    month: moment().locale('ru').startOf('month').format('L'),
+    date: moment().locale('ru').format('L'),
+    orderTime: moment().locale('ru').format('LTS'),
     orderFromTime: fields(0).datetime || '',
     orderToTime: fields(size(addresses) - 1).datetime || '',
     addresses: map(addresses, (e) => {
@@ -259,7 +244,7 @@ export const formatData = (
     cost: prices?.overall || '',
     costDiscount: prices?.discounted || prices?.overall || '',
     buyin: buyin,
-    comment: info?.comment || ''
+    comment: info?.comment || '',
   }
 
   return { raw, processed, modern }

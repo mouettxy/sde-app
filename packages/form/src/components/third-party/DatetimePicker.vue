@@ -1,36 +1,71 @@
 <template lang="pug">
-v-dialog(v-model='display', :width='dialogWidth')
+v-dialog(
+  v-model='display',
+  :width='dialogWidth'
+)
   template(v-slot:activator='{ on }')
     v-text-field(
+      v-on='on',
       v-bind='textFieldProps',
-      :disabled='disabled',
+      :value='formattedDatetime',
       :loading='loading',
       :label='label',
-      :value='formattedDatetime',
-      v-on='on',
+      :disabled='disabled',
       readonly=''
     )
       template(v-slot:progress='')
         slot(name='progress')
-          v-progress-linear(color='primary', indeterminate='', absolute='', height='2')
+          v-progress-linear(
+            indeterminate='',
+            height='2',
+            color='primary',
+            absolute=''
+          )
   v-card
     v-card-text.px-0.py-0
-      v-tabs(fixed-tabs='', v-model='activeTab')
+      v-tabs(
+        v-model='activeTab',
+        fixed-tabs=''
+      )
         v-tab(key='calendar')
           slot(name='dateIcon')
             v-icon event
-        v-tab(key='timer', :disabled='dateSelected')
+        v-tab(
+          key='timer',
+          :disabled='dateSelected'
+        )
           slot(name='timeIcon')
             v-icon access_time
         v-tab-item(key='calendar')
-          v-date-picker(v-model='date', v-bind='datePickerProps', @input='showTimePicker', full-width='')
+          v-date-picker(
+            v-bind='datePickerProps',
+            v-model='date',
+            @input='showTimePicker',
+            full-width=''
+          )
         v-tab-item(key='timer')
-          v-time-picker.v-time-picker-custom(ref='timer', v-model='time', v-bind='timePickerProps', full-width='')
+          v-time-picker.v-time-picker-custom(
+            v-bind='timePickerProps',
+            ref='timer',
+            v-model='time',
+            full-width=''
+          )
     v-card-actions
       v-spacer
-      slot(name='actions', :parent='this')
-        v-btn(color='grey lighten-1', text='', @click.native='clearHandler') {{ clearText }}
-        v-btn(color='green darken-1', text='', @click='okHandler') {{ okText }}
+      slot(
+        name='actions',
+        :parent='this'
+      )
+        v-btn(
+          @click.native='clearHandler',
+          text='',
+          color='grey lighten-1'
+        ) {{ clearText }}
+        v-btn(
+          @click='okHandler',
+          text='',
+          color='green darken-1'
+        ) {{ okText }}
 </template>
 
 <script>
@@ -48,59 +83,59 @@ export default {
   name: 'v-datetime-picker',
   model: {
     prop: 'datetime',
-    event: 'input'
+    event: 'input',
   },
   props: {
     datetime: {
       type: [Date, String],
-      default: null
+      default: null,
     },
     disabled: {
-      type: Boolean
+      type: Boolean,
     },
     loading: {
-      type: Boolean
+      type: Boolean,
     },
     label: {
       type: String,
-      default: ''
+      default: '',
     },
     dialogWidth: {
       type: Number,
-      default: DEFAULT_DIALOG_WIDTH
+      default: DEFAULT_DIALOG_WIDTH,
     },
     dateFormat: {
       type: String,
-      default: DEFAULT_DATE_FORMAT
+      default: DEFAULT_DATE_FORMAT,
     },
     timeFormat: {
       type: String,
-      default: 'HH:mm'
+      default: 'HH:mm',
     },
     clearText: {
       type: String,
-      default: DEFAULT_CLEAR_TEXT
+      default: DEFAULT_CLEAR_TEXT,
     },
     okText: {
       type: String,
-      default: DEFAULT_OK_TEXT
+      default: DEFAULT_OK_TEXT,
     },
     textFieldProps: {
-      type: Object
+      type: Object,
     },
     datePickerProps: {
-      type: Object
+      type: Object,
     },
     timePickerProps: {
-      type: Object
-    }
+      type: Object,
+    },
   },
   data() {
     return {
       display: false,
       activeTab: 0,
       date: DEFAULT_DATE,
-      time: DEFAULT_TIME
+      time: DEFAULT_TIME,
     }
   },
   mounted() {
@@ -129,7 +164,7 @@ export default {
     },
     dateSelected() {
       return !this.date
-    }
+    },
   },
   methods: {
     init() {
@@ -165,12 +200,12 @@ export default {
     },
     showTimePicker() {
       this.activeTab = 1
-    }
+    },
   },
   watch: {
-    datetime: function() {
+    datetime: function () {
       this.init()
-    }
-  }
+    },
+  },
 }
 </script>

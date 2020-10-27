@@ -44,7 +44,7 @@ class Price {
       buyInBuyOut: 0,
       additionals: 0,
       bundles: 0,
-      overall: 0
+      overall: 0,
     }
   }
 
@@ -75,7 +75,7 @@ class Price {
       buyInBuyOut: bInOut,
       additionals: additionalsAddresses,
       bundles,
-      overall
+      overall,
     }
   }
 
@@ -143,7 +143,7 @@ class Price {
 
     return {
       price: accumulate,
-      entries
+      entries,
     }
   }
 
@@ -216,7 +216,7 @@ class Price {
         const tModifierFinally = template(this.settings.mileageFinally.modifier)({
           mileage,
           rate,
-          client: this.user
+          client: this.user,
         })
 
         return parseInt(tPriceFinally) * parseInt(tModifierFinally)
@@ -292,7 +292,7 @@ export default (store: Store<any>) => {
       'addresses/UPDATE_FIELDS',
       'addresses/UPDATE_LIST',
       'addresses/UPDATE_ROUTES',
-      'addresses/UPDATE_INFO'
+      'addresses/UPDATE_INFO',
     ]
     if (includes(affectedMutations, mutation.type)) {
       const price = new Price(priceSettings)

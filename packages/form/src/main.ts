@@ -8,6 +8,7 @@ import './plugins/notifications'
 import './plugins/tippy'
 import './plugins/mask'
 import './plugins/tour'
+import './plugins/socket'
 
 import vuetify from './plugins/vuetify'
 

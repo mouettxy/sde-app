@@ -2,7 +2,7 @@ import { OrderModel } from './models/orderModel'
 import { UserModel } from './models/userModel'
 import { ClientModel } from './models/clientModel'
 import dJSON from 'dirty-json'
-import { each } from 'lodash'
+import { each, find } from 'lodash'
 import axios from 'axios'
 import moment from 'moment'
 
@@ -41,6 +41,21 @@ async function seedClients(data) {
   for (const key in data) {
     const e = data[key]
 
+    const formatPhoneNumber = (str: string) => {
+      //Filter only numbers from the input
+      let cleaned = ('' + str).replace(/\D/g, '')
+      cleaned = cleaned.slice(1)
+
+      //Check if the input is of correct length
+      const match = cleaned.match(/^(\d{3})(\d{3})(\d{2})(\d{2})$/)
+
+      if (match) {
+        return '+7 ' + '(' + match[1] + ') ' + match[2] + ' ' + match[3] + '-' + match[4]
+      }
+
+      return null
+    }
+
     if (e.customer_name && e.CLIENT) {
       const created = new ClientModel({
         id: e.CLIENT,
@@ -74,7 +89,24 @@ async function seedClients(data) {
           created.addresess.push(e)
         })
       } else {
-        created.orders = []
+        created.addresess = []
+      }
+
+      const mainAddress = find(created.addresess, { name: 'От нас / К нам' })
+
+      if (mainAddress && !mainAddress.fields) {
+        const phoneNumber = formatPhoneNumber(e.user.customer_phone)
+        mainAddress.fields = {
+          bundles: 0,
+          bus: false,
+          buyin: 0,
+          buyout: 0,
+          comment: e.customer_adress_comment || '',
+          datetime: '',
+          phone: phoneNumber ? phoneNumber : '',
+          takeIn: created.alwaysIn,
+          takeOut: created.alwaysOut,
+        }
       }
 
       if (e.saved_orders) {

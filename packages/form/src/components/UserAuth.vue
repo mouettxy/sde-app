@@ -37,8 +37,8 @@ v-card.elevation-3.auth__field
           v-list-item-content(v-if='isNewUser')
             v-list-item-title {{ `${$t("newUserWelcome")} ${user}!` }}
           v-list-item-content(v-if='!isNewUser')
-            v-list-item-title {{ `${$t("authIdText")} ${user.CLIENT}.` }}
-            v-list-item-subtitle {{ `${$t("authUserText")} ${user.customer_name}.` }}
+            v-list-item-title {{ `${$t("authIdText")} ${user.id}.` }}
+            v-list-item-subtitle {{ `${$t("authUserText")} ${user.name}.` }}
           v-list-item-action
             v-btn(
               :content='$t("logoutButtonTip")',
@@ -84,7 +84,6 @@ export default class ClientField extends Mixins(colors) {
   public login = ''
   public password = ''
   public showPassword = false
-  public needRemember = false
 
   get user() {
     return authModule.user
@@ -124,27 +123,42 @@ export default class ClientField extends Mixins(colors) {
 
   async auth() {
     this.isLoading = true
-    const response = await authModule.login({
-      type: 'default',
-      login: this.login,
-      password: this.password,
-    })
 
-    if (response.type === 'error') {
-      this.$notification.error(response.message)
-      this.sucMsg = ''
-      this.errMsg = response.message
-      addressesModule.reset()
-    } else if (response.type === 'need-password') {
-      this.errMsg = ''
-      this.sucMsg = ''
-      this.showPassword = true
-      addressesModule.reset()
-    } else if (response.type === 'success') {
-      this.$notification.success(response.message)
-      this.errMsg = ''
-      this.sucMsg = response.message
-      this.showPassword = false
+    const ping = await authModule.ping(this.login)
+
+    if (ping) {
+      // existing user
+      if (this.login && this.password) {
+        const response = await authModule.login({
+          login: this.login,
+          password: this.password,
+        })
+
+        if (response) {
+          this.$notification.success('Успешная авторизация')
+          this.showPassword = false
+          this.errMsg = ''
+          this.sucMsg = ''
+        } else {
+          this.errMsg = 'Неверный логин или пароль'
+        }
+      } else {
+        this.showPassword = true
+      }
+    } else {
+      // new user
+      if (this.login) {
+        const response = await authModule.login({
+          login: this.login,
+        })
+
+        if (response) {
+          this.$notification.success('Добро пожаловать в sde ' + this.login)
+          this.showPassword = false
+          this.errMsg = ''
+          this.sucMsg = ''
+        }
+      }
     }
     this.isLoading = false
   }

@@ -125,7 +125,7 @@ export default class AddressField extends Mixins(colors, breakpoints) {
       return
     }
     if (!this.value.suggestion.geo_lat || !this.value.suggestion.geo_lon) {
-      const response = await api.getLatLon(this.value.detailedAddress)
+      const response = await api.latLon(this.value.detailedAddress)
       if (response) {
         this.value = {
           ...this.value,
@@ -161,7 +161,7 @@ export default class AddressField extends Mixins(colors, breakpoints) {
 
   async getSuggestions() {
     this.isLoading = true
-    const response = await api.getSuggestions(this.query as string)
+    const response = await api.suggestions(this.query as string)
     if (response) {
       this.entries = response
     } else {

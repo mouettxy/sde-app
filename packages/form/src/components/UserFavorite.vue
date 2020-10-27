@@ -34,11 +34,19 @@ import UserFavoriteAliases from '@/components/UserFavoriteAliases.vue'
 })
 export default class UserFavorite extends Mixins(colors, breakpoints) {
   get aliases() {
-    return authModule.aliases
+    if (!authModule.user || typeof authModule.user === 'string') {
+      return false
+    }
+
+    return authModule.user.addresess
   }
 
   get addresses() {
-    return authModule.addresses
+    if (!authModule.user || typeof authModule.user === 'string') {
+      return false
+    }
+
+    return authModule.user.orders
   }
 }
 </script>

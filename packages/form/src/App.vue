@@ -374,7 +374,7 @@ export default class App extends Mixins(colors, breakpoints) {
 
     const isRememeredUser = this.isRememberedUser()
     if (typeof isRememeredUser === 'number') {
-      await authModule.relog({ type: 'default', id: isRememeredUser })
+      await authModule.relog({ id: isRememeredUser })
     }
 
     if (!isRememeredUser && this.$cookies.get('fill-default-address')) {
@@ -383,8 +383,10 @@ export default class App extends Mixins(colors, breakpoints) {
 
     if (this.$cookies.get('fill-default-address')) {
       if (addressesModule.addressList.length <= 0) {
-        const defaultAddress = lodashFilter(authModule.aliases, { name: 'От нас / К нам' })[0] as OrderAddress
-        addressesModule.add(defaultAddress)
+        if (authModule.user && typeof authModule.user !== 'string') {
+          const defaultAddress = lodashFilter(authModule.user.addresess, { name: 'От нас / К нам' })[0] as OrderAddress
+          addressesModule.add(defaultAddress)
+        }
       }
     }
 

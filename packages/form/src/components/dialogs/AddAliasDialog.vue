@@ -39,8 +39,9 @@
 import { Component, Prop, Mixins } from 'vue-property-decorator'
 
 import { breakpoints, colors } from '@/mixins'
-import { authModule } from '@/store'
+import { addressesModule, authModule } from '@/store'
 import { includes, map } from 'lodash'
+import { User } from '@/typings/api'
 
 @Component({})
 export default class AddAliasDialog extends Mixins(breakpoints, colors) {
@@ -61,7 +62,7 @@ export default class AddAliasDialog extends Mixins(breakpoints, colors) {
 
     if (
       includes(
-        map(authModule.aliases, (e) => e.name),
+        map((authModule.user as User).addresess, (e) => e.name),
         this.aliasName,
       )
     ) {
@@ -85,6 +86,8 @@ export default class AddAliasDialog extends Mixins(breakpoints, colors) {
 
     if (status) {
       this.$notification.success('Успешное добавление адреса.')
+      this.value = false
+      addressesModule.SET_IS_ALIAS(this.alias.id)
       return Promise.resolve(true)
     } else {
       this.$notification.error('Ошибка сервера. Повторите позднее...')

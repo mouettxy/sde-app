@@ -142,8 +142,8 @@ export default class AddressInfo extends Mixins(colors, breakpoints) {
     if (authModule.user) {
       const user = authModule.user
       if (typeof user !== 'string') {
-        if (user.payment_who) {
-          this.info.whoPays = user.payment_who
+        if (user.paymentWho) {
+          this.info.whoPays = user.paymentWho
           this.debounced()
         }
       }

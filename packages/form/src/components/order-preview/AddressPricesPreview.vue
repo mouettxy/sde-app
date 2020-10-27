@@ -62,7 +62,7 @@ v-card
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { OrderPrices, OrderInformation, OrderRoute } from '@/typings/order'
 import { round } from 'lodash'
-import { User } from '@/store/auth'
+import { User } from '@/typings/api'
 
 @Component
 export default class AddressPricesPreview extends Vue {

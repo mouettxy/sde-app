@@ -42,6 +42,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { breakpoints, colors } from '@/mixins'
 import { addressesModule, authModule } from '@/store'
 import { includes, map } from 'lodash'
+import { User } from '@/typings/api'
 
 @Component
 export default class AddOrderDialog extends Mixins(breakpoints, colors) {
@@ -59,7 +60,7 @@ export default class AddOrderDialog extends Mixins(breakpoints, colors) {
 
     if (
       includes(
-        map(authModule.addresses, (e) => e.name),
+        map((authModule.user as User).orders, (e) => e.name),
         this.orderName,
       )
     ) {

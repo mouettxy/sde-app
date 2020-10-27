@@ -59,7 +59,7 @@ export class ClientController {
     const id = request.params.id
 
     try {
-      const client = this.model.findOne({ id })
+      const client = await this.model.findOne({ id })
 
       if (client) {
         response.status(200)

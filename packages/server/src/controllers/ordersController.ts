@@ -139,9 +139,7 @@ export class OrdersController {
   public create = async (request: express.Request, response: express.Response, next: NextFunction): Promise<void> => {
     const data = request.body
 
-    const created = new this.model({
-      ...data,
-    })
+    const created = new this.model(request.body)
 
     await created
       .save()

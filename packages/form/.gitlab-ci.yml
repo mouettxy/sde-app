@@ -1,0 +1,33 @@
+stages:
+  - build
+  - deploy
+
+# build stage
+build_app:
+  image: node:alpine
+  stage: build
+  only:
+    - master
+  script:
+    - npm install
+    - npm run build
+  cache:
+    paths:
+      - node_modules/
+  artifacts:
+    paths:
+      # build folder
+      - dist/
+    expire_in: 1 hour
+
+# production stage
+production:
+  stage: deploy
+  only:
+    - master
+  before_script:
+    - apt-get update -qy
+    - apt-get install -y lftp
+  script:
+    # Sync to FTP
+    - lftp -e "set ssl:verify-certificate no; open ftp://api.sde.ru.com; user $FTP_LOGIN $FTP_PASSWORD; mirror -X .* -X .*/ --reverse --verbose --delete dist/ www/api.sde.ru.com/order/; bye"

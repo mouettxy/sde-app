@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 54px;
+        fill: #ffcc01;
+        text-anchor: end;
+        font-family: "Century Gothic";
+      }
+    </style>
+  </defs>
+  <text id="sde" class="cls-1" transform="translate(890.26 650.988) scale(7.442)"><tspan x="0">sde</tspan></text>
+</svg>

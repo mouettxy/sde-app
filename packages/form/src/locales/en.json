@@ -1,0 +1,142 @@
+{
+  "makeOrder": "Make an order",
+  "map": "Map",
+  "homeMapMarkerTip": "\"From us\" as the beginning of all orders",
+  "invertColorsTip": "Change theme",
+  "changeLocaleTip": "Change locale",
+  "loginHint": "Enter the customer number in our system. If you are a new client please provide your company name.",
+  "loginLabel": "Customer ID in sde service",
+  "passwordHint": "Enter the client's password in our system.",
+  "passwordLabel": "Customer password in sde service",
+  "rememberMeLabel": "Remember me",
+  "newUserWelcome": "Welcome to sde",
+  "authIdText": "Authorized under ID",
+  "authUserText": "Customer:",
+  "logoutButtonTip": "Logout",
+  "addresses": "Addresses",
+  "orders": "Orders",
+  "seemsEmpty": "Seems order doesent have any addresses yet...",
+
+  "title": "Delivery request",
+
+  "menu": {
+    "clientCabinet": "Customer cabinet",
+    "contacts": "Contacts",
+    "payment": "Payment",
+    "deliveryCost": "Delivery cost"
+  },
+
+  "userFavoriteAddresses": {
+    "searchLabel": "Search for available saved orders",
+    "successNotification": "The addresses are taken from the saved order, the search field will be cleared."
+  },
+
+  "userFavoriteAliases": {
+    "searchLabel": "Search for available saved addresses",
+    "successNotification": "The address has been successfully added, the search field will be cleared."
+  },
+
+  "addressField": {
+    "header": "Choose address",
+    "btn": "Add address",
+    "hint": "The selected address will be shown in the address list ...",
+    "label": "Enter the address",
+    "errorOnSuggestionsFetch": "Failed to get suggestions, please try to reformulate your request.",
+    "errorAddressWithoutHome": "Please select address with house.",
+    "errorCannotGeocodeAddress": "Failed to get data on address. Try again or contact the site administration.",
+    "errorAddressAdd": "Unexpedted error when trying to add address. Try again or contact the site administration.",
+    "addressAdded": "Address added successfully."
+  },
+
+  "addressFields": {
+    "phoneLabel": "Phone",
+    "phoneHint": "The forwarder will be able to contact you, as well as notify you by SMS on arrival.",
+    "datetimeLabel": "When to pick up / deliver",
+    "datetimeClear": "Clear",
+    "datetimeApply": "Apply",
+    "buyoutLabel": "Proceeds",
+    "buyinLabel": "Buyout",
+    "bundlesLabel": "Bundles",
+    "bundlesCount": "Amount of bundles",
+    "bundlesHint": "Select item quantity. We are responsible for the composition of the order.",
+    "commentLabel": "Comment",
+    "commentHint": "Provide any additional information to the address.",
+    "takeInLabel": "Skid",
+    "takeOutLabel": "Takeaway",
+    "busLabel": "Meet / Send Bus",
+    "removeTip": "Remove address from route list.",
+    "removeBtn": "Remove"
+  },
+
+  "addressInfo": {
+    "commentLabel": "Comment",
+    "commentHint": "Provide any additional information to the address.",
+    "quickLabelText": "Express delivery",
+    "quickLabelPrice": "(+20% cost)",
+    "carLabelText": "Car required",
+    "carLabelPrice": "(+15% cost)",
+    "whoPaysTitle": "Who pays",
+    "whoPays1": "From the proceeds",
+    "whoPays2": "Sender",
+    "whoPays3": "Recipient",
+    "whoPays4": "Customer"
+  },
+
+  "aliasField": {
+    "header": "Save address",
+    "label": "What is the name of address. For example: \"Client Artyushkova 15\"",
+    "hint": "We will save the address and the completed fields under the specified name. You can use this in the future to quickly fill out orders.",
+    "tip": "Saving the address in your account.",
+    "btn": "Save"
+  },
+
+  "orderField": {
+    "label": "Name of saved order",
+    "hint": "Select a name of saved order. For example: \"From us to customer number 1 \"",
+    "btn": "Save",
+    "header": "Save order",
+    "disclaimer": "If you save, the order will be sent!"
+  },
+
+  "orderPreview": {
+    "sendOrder": "Send",
+    "newClientDisclaimer": "Welcome to sde. Do not forget to contact the site administration for a permanent customer ID.",
+    "addressInfoTitle": "Add. information"
+  },
+
+  "pricesPreview": {
+    "title": "Pricing",
+    "distance": "Distance",
+    "distanceMeasure": "km.",
+    "additionals": "Additional services",
+    "buyInBuyOut": "Revenue / Buyout",
+    "bundles": "Bundles",
+    "quick": "Express delivery",
+    "car": "Delivery by car",
+    "additionalsCount": "Number of add. services",
+    "discount": "Customer discount",
+    "total": "Total",
+    "discounted": "With discount"
+  },
+
+  "notifications": {
+    "orderSuccessSent": "Order has been successfully sent. Order ID:",
+    "orderSuccessSaveSent": "Order has been successfully saved and sent. Order ID:",
+    "orderErrorSave": "An error occurred while saving order. Check the correctness of the entered data. The order was not sent.",
+    "orderErrorData": "An error occurred while forming order. Check the correctness of the entered data. Order was not sent.",
+    "orderErrorServer": "Server error. Try again later ..."
+  },
+
+  "orderButtons": {
+    "preview": "Preview order",
+    "send": "Send order",
+    "save": "Save order"
+  },
+
+  "tour": {
+    "btnSkip": "Skip",
+    "btnPrevious": "Previous",
+    "btnNext": "Next",
+    "btnStop": "Stop"
+  }
+}

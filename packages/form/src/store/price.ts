@@ -3,7 +3,7 @@ import priceSettings from '@/prices.json'
 import { Store } from 'vuex'
 import { includes, debounce, each, isNull, isEmpty, size, template, isUndefined, round } from 'lodash'
 import { authModule, addressesModule } from '@/store'
-import { User } from '@/store/auth'
+import { User } from '@/typings/api'
 import { OrderAddress, OrderInformation, OrderRoute } from '@/typings/order'
 
 class Price {
@@ -50,7 +50,7 @@ class Price {
 
   additionals() {
     let freeExtraPoint
-    if (!(typeof this.user === 'string') && !isNull(this.user) && this.user.free_extra_point === '1') {
+    if (!(typeof this.user === 'string') && !isNull(this.user) && this.user.free.extraPoint) {
       freeExtraPoint = true
     } else {
       freeExtraPoint = false
@@ -83,14 +83,14 @@ class Price {
     let accumulate = 0
 
     let freePay: boolean
-    if (!(typeof this.user === 'string') && !isNull(this.user) && this.user.free_pay === '1') {
+    if (!(typeof this.user === 'string') && !isNull(this.user) && this.user.free.pay) {
       freePay = true
     } else {
       freePay = false
     }
 
     let freeCash: boolean
-    if (!(typeof this.user === 'string') && !isNull(this.user) && this.user.free_cash === '1') {
+    if (!(typeof this.user === 'string') && !isNull(this.user) && this.user.free.cash) {
       freeCash = true
     } else {
       freeCash = false
@@ -113,14 +113,14 @@ class Price {
     let entries = 0
 
     let freeIn: boolean
-    if (!(typeof this.user === 'string') && !isNull(this.user) && this.user.free_in === '1') {
+    if (!(typeof this.user === 'string') && !isNull(this.user) && this.user.free.in) {
       freeIn = true
     } else {
       freeIn = false
     }
 
     let freeOut: boolean
-    if (!(typeof this.user === 'string') && !isNull(this.user) && this.user.free_out === '1') {
+    if (!(typeof this.user === 'string') && !isNull(this.user) && this.user.free.out) {
       freeOut = true
     } else {
       freeOut = false
@@ -165,8 +165,8 @@ class Price {
   routes() {
     if (this.route) {
       let rate: number
-      if (!(typeof this.user === 'string') && !isNull(this.user) && this.user.free_out === '1') {
-        rate = parseInt(this.user.Input)
+      if (!(typeof this.user === 'string') && !isNull(this.user) && this.user.free.out) {
+        rate = this.user.rate
       } else {
         rate = NaN
       }
@@ -264,11 +264,8 @@ class Price {
       }
 
       if (!(typeof this.user === 'string') && !isNull(this.user) && this.user.discount) {
-        const discount = parseInt(this.user.discount)
-        if (!isNaN(discount)) {
-          discounted = accumulate
-          discounted -= (discounted / 100) * discount
-        }
+        discounted = accumulate
+        discounted -= (discounted / 100) * this.user.discount
       }
 
       priceList.overall = round(accumulate)

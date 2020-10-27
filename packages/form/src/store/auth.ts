@@ -5,14 +5,11 @@ import { addressesModule } from '.'
 import { User } from '@/typings/api'
 
 export type AuthInput = {
-  type: string
   login?: string
   password?: string
-  needRemember?: boolean
 }
 
 export type RelogInput = {
-  type: string
   id: number | string
 }
 
@@ -60,6 +57,10 @@ export default class Auth extends VuexModule {
       } else {
         return false
       }
+    } else if (login && !password) {
+      this.context.commit('SET_USER', login)
+
+      return true
     }
 
     return false
@@ -78,8 +79,8 @@ export default class Auth extends VuexModule {
   async relog(payload: RelogInput) {
     const response = await api.get(payload.id)
 
-    if (response.status === 200) {
-      this.context.commit('SET_USER', response.data)
+    if (response) {
+      this.context.commit('SET_USER', response)
       return true
     } else {
       return false
@@ -89,9 +90,9 @@ export default class Auth extends VuexModule {
   @Action
   async addAlias(payload: any) {
     try {
-      if (this.isNewUser) {
+      if (!this.isNewUser) {
         const response = await api.setAliases((this.user as User).id, payload)
-        if (response.status === 200) {
+        if (response) {
           return true
         } else {
           return false

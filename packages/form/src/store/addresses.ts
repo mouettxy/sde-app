@@ -18,9 +18,9 @@ import {
   map,
 } from 'lodash'
 import { authModule } from '.'
-import { formatData, formatPhoneNumber } from '@/helpers'
-import { sendOrder as apiSendOrder, saveOrder as apiSaveOrder } from '@/api'
-import { User } from './auth'
+import { formatData } from '@/helpers'
+import { userApi, ordersApi } from '@/api'
+import { User } from '@/typings/api'
 import Vue from 'vue'
 import i18n from '@/i18n'
 
@@ -56,32 +56,6 @@ export default class Addresses extends VuexModule {
 
   @Mutation
   ADD_ADDRESS(payload: Address) {
-    if (payload.name === 'От нас / К нам') {
-      let phoneNumber
-      if (typeof authModule.user !== 'string' && !isNull(authModule.user)) {
-        if (authModule.user.customer_phone) {
-          phoneNumber = formatPhoneNumber(authModule.user.customer_phone)
-        }
-      }
-
-      payload.fields = {
-        bundles: payload.fields?.bundles || 0,
-        bus: payload.fields?.bus || false,
-        buyin: payload.fields?.buyin || 0,
-        buyout: payload.fields?.buyout || 0,
-        comment:
-          typeof authModule.user !== 'string' && !isNull(authModule.user)
-            ? authModule.user.customer_adress_comment
-            : '',
-        datetime: '',
-        phone: phoneNumber ? phoneNumber : '',
-        takeIn: false,
-        takeOut: false,
-      }
-
-      payload.isAlias = true
-    }
-
     this.addresses ? this.addresses.push(payload) : (this.addresses = [payload])
 
     let id = 1
@@ -91,8 +65,8 @@ export default class Addresses extends VuexModule {
     })
 
     if (typeof authModule.user !== 'string' && !isNull(authModule.user)) {
-      const alwaysIn = authModule.user.always_in === '1'
-      const alwaysOut = authModule.user.always_out === '1'
+      const alwaysIn = authModule.user.alwaysIn
+      const alwaysOut = authModule.user.alwaysOut
       if (alwaysIn || alwaysOut) {
         each(this.addresses, (e, i) => {
           if (!e.fields) {
@@ -182,20 +156,22 @@ export default class Addresses extends VuexModule {
     this.context.commit('RESET_STATE')
 
     if (!notRestoreUserFields) {
-      if (await authModule.relog({ type: 'default', id: Vue.prototype.$cookies.get('remembered-id') })) {
+      if (await authModule.relog({ id: Vue.prototype.$cookies.get('remembered-id') })) {
         if (Vue.prototype.$cookies.get('fill-default-address') && Vue.prototype.$cookies.get('remembered-id')) {
           if (this.addresses.length <= 0) {
-            const defaultAddress = lodashFilter(authModule.aliases, { name: 'От нас / К нам' })[0] as Address
-            this.context.dispatch('add', defaultAddress)
+            if (authModule.user && typeof authModule.user !== 'string') {
+              const defaultAddress = lodashFilter(authModule.user.addresess, { name: 'От нас / К нам' })[0] as Address
+              this.context.dispatch('add', defaultAddress)
+            }
           }
         }
 
         if (authModule.user) {
           const user = authModule.user
           if (typeof user !== 'string') {
-            if (user.payment_who) {
+            if (user.paymentWho) {
               this.context.commit('UPDATE_INFO', {
-                whoPays: user.payment_who,
+                whoPays: user.paymentWho,
                 car: false,
                 comment: '',
                 quick: false,
@@ -289,14 +265,14 @@ export default class Addresses extends VuexModule {
         route: cloneDeep(this.routes),
       }
 
-      const response = await apiSaveOrder(state, (authModule.user as User).CLIENT)
+      const response = await userApi.setOrder((authModule.user as User).id, state)
 
       if (response) {
-        const send = await apiSendOrder(parsed.raw, parsed.processed, parsed.modern)
+        const send = await ordersApi.send(parsed)
         await this.context.dispatch('reset')
         return Promise.resolve({
           status: 'OK-SAVED',
-          message: `${i18n.t('notifications.orderSuccessSaveSent')} ${send}`,
+          message: `${i18n.t('notifications.orderSuccessSaveSent')} ${send.id}`,
         })
       } else {
         return Promise.resolve({ status: 'ERROR-SAVED', message: i18n.t('notifications.orderErrorSave') as string })
@@ -311,12 +287,12 @@ export default class Addresses extends VuexModule {
     try {
       const parsed = formatData(authModule.user, this.addresses, this.information, this.routes, this.prices)
       try {
-        const response = await apiSendOrder(parsed.raw, parsed.processed, parsed.modern)
+        const response = await ordersApi.send(parsed)
         if (response) {
           this.context.dispatch('reset')
           return Promise.resolve({
             status: 'OK',
-            message: `${i18n.t('notifications.orderSuccessSent')} ${response}`,
+            message: `${i18n.t('notifications.orderSuccessSent')} ${response.id}`,
           })
         } else {
           return Promise.resolve({ status: 'ERROR', message: i18n.t('notifications.orderErrorServer') as string })

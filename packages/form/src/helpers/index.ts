@@ -69,10 +69,10 @@ export const formatData = (
 
   const modern = {
     month: moment().startOf('month').format('L'),
-    date: moment(),
-    orderTime: moment(),
-    orderFromTime: fields(0).datetime || '',
-    orderToTime: fields(size(addresses) - 1).datetime || '',
+    date: moment().toISOString(),
+    orderTime: moment().toISOString(),
+    orderFromTime: moment(fields(0).datetime, 'DD.MM.YYYY HH:mm').toISOString() || '',
+    orderToTime: moment(fields(size(addresses) - 1).datetime, 'DD.MM.YYYY HH:mm').toISOString() || '',
     clientId: isNewUser(client) ? client : client.id,
     addresses: map(addresses, (e) => {
       return { address: e.address, fields: e.fields, id: e.id, lat: e.lat, lon: e.lon }
@@ -84,5 +84,5 @@ export const formatData = (
     from,
   }
 
-  return { modern }
+  return modern
 }

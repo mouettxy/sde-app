@@ -252,12 +252,12 @@ class Price {
       }
 
       if (this.information) {
-        if (this.information.car) {
+        if (this.information.car && this.settings.carMarkup) {
           const markup = accumulate * (this.settings.carMarkup / 100)
           accumulate += markup
         }
 
-        if (this.information.quick) {
+        if (this.information.quick && this.settings.quickMarkup) {
           const markup = accumulate * (this.settings.quickMarkup / 100)
           accumulate += markup
         }

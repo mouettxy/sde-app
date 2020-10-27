@@ -42,8 +42,8 @@
       "bundle": 5,
       "extraPoint": 20
     },
-    "carMarkup": 15,
-    "quickMarkup": 20
+    "carMarkup": 0,
+    "quickMarkup": 0
   },
   "Краснодар": {
     "mileage": [
@@ -88,8 +88,8 @@
       "bundle": 5,
       "extraPoint": 20
     },
-    "carMarkup": 15,
-    "quickMarkup": 20
+    "carMarkup": 0,
+    "quickMarkup": 0
   },
   "Севастополь": {
     "mileage": [
@@ -134,8 +134,8 @@
       "bundle": 5,
       "extraPoint": 20
     },
-    "carMarkup": 15,
-    "quickMarkup": 20
+    "carMarkup": 0,
+    "quickMarkup": 0
   },
   "Санкт-Петербург": {
     "mileage": [
@@ -180,8 +180,8 @@
       "bundle": 5,
       "extraPoint": 20
     },
-    "carMarkup": 15,
-    "quickMarkup": 20
+    "carMarkup": 0,
+    "quickMarkup": 0
   },
   "Ставрополь": {
     "mileage": [
@@ -226,8 +226,8 @@
       "bundle": 5,
       "extraPoint": 20
     },
-    "carMarkup": 15,
-    "quickMarkup": 20
+    "carMarkup": 0,
+    "quickMarkup": 0
   },
   "Симферополь": {
     "mileage": [
@@ -272,7 +272,7 @@
       "bundle": 5,
       "extraPoint": 20
     },
-    "carMarkup": 15,
-    "quickMarkup": 20
+    "carMarkup": 0,
+    "quickMarkup": 0
   }
 }

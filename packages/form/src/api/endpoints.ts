@@ -4,8 +4,9 @@ export class Client {
   private endpoints = (...args: Array<string | number | boolean | Array<any> | Record<string, any>>) => {
     return {
       get: `/client/${args[0]}`,
+      ping: `/client/${args[0]}/auth/ping`,
       login: `/client/${args[0]}/auth/login`,
-      token: `/client/${args[0]}/auth/token`,
+      token: `/client/${args[0]}/auth/token`, // TODO
       setAliases: `/client/${args[0]}/client-alias`,
       setOrder: `/client/${args[0]}/client-order`,
     }
@@ -41,9 +42,9 @@ export class Client {
   public async login(id: string | number, password: string) {
     try {
       const response = await http.post(this.endpoints(id).login, { password })
-      return { data: response.data, status: response.status }
+      return response.data
     } catch (error) {
-      return { data: false, status: 500 }
+      return false
     }
   }
 
@@ -53,6 +54,15 @@ export class Client {
       return { data: response.data, status: response.status }
     } catch (error) {
       return { data: false, status: 500 }
+    }
+  }
+
+  public async ping(id: string | number) {
+    try {
+      const response = await http.post(this.endpoints(id).ping)
+      return response.data
+    } catch (error) {
+      return false
     }
   }
 
@@ -181,7 +191,7 @@ export class Order {
     this.http = http
   }
 
-  public async save(data: any) {
+  public async send(data: any) {
     try {
       const response = await http.post(this.endpoints().send, data)
       if (response.status !== 200) {
@@ -193,26 +203,4 @@ export class Order {
       return false
     }
   }
-}
-
-export default {
-  client: (id: number | string | undefined = undefined) => ({
-    get: `client/${id}`,
-    aliases: `client/${id}/aliases`,
-    addresses: `client/${id}/orders`,
-    register: 'client/auth/register',
-    login: 'client/auth/login',
-    changeField: `client/${id}/field`,
-    renewToken: `client/${id}/token`,
-    replaceAliases: `client/${id}/aliases/replace`,
-    replaceOrders: `client/${id}/orders/replace`,
-    saveOrder: `client/${id}/orders/`,
-  }),
-  addresses: {
-    suggestions: '/address',
-    geocoder: '/3',
-  },
-  orders: {
-    send: '/order/',
-  },
 }

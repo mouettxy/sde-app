@@ -2,7 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 
 const config = {
-  baseURL: 'https://api.sde.ru.com/api/v2/',
+  baseURL: process.env.NODE_ENV === 'production' ? 'https://api2.sde.ru.com/v1/' : 'http://localhost:8000/v1/',
   timeout: 10000,
   validateStatus: (status: number) => {
     return status < 500
@@ -25,17 +25,9 @@ const dadataConfig = {
   },
 }
 
-const geocoderConfig = {
-  baseUrl: 'http://search.maps.sputnik.ru/search',
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-  },
-}
-
+const _cleanAxios = axios.create()
 const _axios = axios.create(config)
 const _dadata = axios.create(dadataConfig)
-const _geocoder = axios.create(geocoderConfig)
 
 _axios.interceptors.request.use(
   function (config) {
@@ -69,6 +61,6 @@ _axios.interceptors.response.use(
 
 Vue.prototype.$http = _axios
 
+export const axiosInstance = _cleanAxios
 export const http = _axios
 export const dadata = _dadata
-export const geocoder = _geocoder

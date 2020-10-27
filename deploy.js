@@ -14,6 +14,7 @@ async function run() {
 
   const apiPath = __dirname + '/packages/server'
   const expeditorsPagePath = __dirname + '/packages/app'
+  const formPath = __dirname + '/packages/form'
 
   await ssh.execCommand('rm -rf /var/www/api', { cwd: '/' })
 
@@ -47,21 +48,24 @@ async function run() {
 
   console.info('[CLIENT] Deployed succesefully')
 
-  fs.rmdir(`${apiPath}/dist`, { recursive: true }, (err) => {
-    if (err) {
-      throw err
-    }
+  await ssh.execCommand('rm -rf /var/www/form', { cwd: '/' })
 
+  await ssh.putDirectory(`${formPath}/dist`, `${process.env.DEPLOY_FORM_PATH}`, {
+    recursive: true,
+    concurrency: 10,
+  })
+
+  console.info('[FORM] Deployed succesefully')
+
+  fs.rmdir(`${apiPath}/dist`, { recursive: true }, () => {
     console.log(`${apiPath}/dist is deleted!`)
-
-    fs.rmdir(`${expeditorsPagePath}/dist`, { recursive: true }, (err) => {
-      if (err) {
-        throw err
-      }
-
+    fs.rmdir(`${expeditorsPagePath}/dist`, { recursive: true }, () => {
       console.log(`${expeditorsPagePath}/dist is deleted!`)
+      fs.rmdir(`${formPath}/dist`, { recursive: true }, () => {
+        console.log(`${formPath}/dist is deleted!`)
 
-      process.exit()
+        process.exit()
+      })
     })
   })
 }

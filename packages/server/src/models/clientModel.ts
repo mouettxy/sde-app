@@ -1,4 +1,4 @@
-import { getModelForClass, prop, plugin, ReturnModelType, Ref } from '@typegoose/typegoose'
+import { getModelForClass, prop, plugin } from '@typegoose/typegoose'
 
 import { ClientAddress, ClientOrder, ClientFree } from './sharedObjects'
 

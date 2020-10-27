@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs'
 import { api } from './../server'
 import { NextFunction } from 'connect'
 import express from 'express'
@@ -5,6 +6,7 @@ import { parsePaginateResponse } from '../utils/helpers'
 import { ObjectNotFoundException } from '../exceptions'
 import { HttpException } from '../exceptions'
 import { ClientModel } from '../models'
+import e from 'express'
 
 export class ClientController {
   private model = ClientModel
@@ -53,6 +55,123 @@ export class ClientController {
       .catch(() => next(new HttpException(422, 'Не удалось обработать данные')))
   }
 
+  public ping = async (request: express.Request, response: express.Response, next: NextFunction): Promise<void> => {
+    const id = request.params.id
+
+    try {
+      const client = this.model.findOne({ id })
+
+      if (client) {
+        response.status(200)
+        response.send(true)
+      } else {
+        response.status(403)
+        response.send(false)
+      }
+    } catch (error) {
+      console.log(error)
+      next(new HttpException(500, 'Ошибка сервера'))
+    }
+  }
+
+  public login = async (request: express.Request, response: express.Response, next: NextFunction): Promise<void> => {
+    const login = request.body.login
+    const password = request.body.password
+
+    try {
+      if (login && password) {
+        const user = await this.model.findOne({ id: login })
+
+        if (user) {
+          if (!user.password && user.hash) {
+            if (user.hash === password) {
+              response.status(200)
+              user.set('password', '')
+              response.send(user)
+            } else {
+              response.status(403)
+              response.send(false)
+            }
+          } else if (user.password) {
+            const isPasswordsMatch = await bcrypt.compare(password, user.password)
+
+            if (isPasswordsMatch) {
+              response.status(200)
+              user.set('password', '')
+              response.send(user)
+            } else {
+              response.status(403)
+              response.send(false)
+            }
+          } else {
+            next(new HttpException(500, 'Ошибка сервера'))
+          }
+        } else {
+          next(new HttpException(500, 'Ошибка сервера'))
+        }
+      } else {
+        response.status(403)
+        response.send(false)
+      }
+    } catch (error) {
+      next(new HttpException(500, 'Ошибка сервера'))
+    }
+  }
+
+  public getToken = async (request: express.Request, response: express.Response, next: NextFunction): Promise<void> => {
+    // TODO
+  }
+
+  public addOrder = async (request: express.Request, response: express.Response, next: NextFunction): Promise<void> => {
+    const id = request.params.id
+
+    try {
+      const user = await this.model.findOne({ id })
+
+      if (user) {
+        user.orders.push(request.body)
+        await user.save()
+
+        api.io.emit('updated client', user)
+        api.io.emit('update clients')
+
+        response.status(200)
+        response.send(true)
+      } else {
+        next(new HttpException(500, 'Ошибка сервера'))
+      }
+    } catch (error) {
+      next(new HttpException(500, 'Ошибка сервера'))
+    }
+  }
+
+  public addAddress = async (
+    request: express.Request,
+    response: express.Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    const id = request.params.id
+
+    try {
+      const user = await this.model.findOne({ id })
+
+      if (user) {
+        user.addresess.push(request.body)
+        await user.save()
+
+        api.io.emit('updated client', user)
+        api.io.emit('update clients')
+
+        response.status(200)
+        response.send(true)
+      } else {
+        next(new HttpException(500, 'Ошибка сервера'))
+      }
+    } catch (error) {
+      next(new HttpException(500, 'Ошибка сервера'))
+    }
+  }
+
   public create = async (request: express.Request, response: express.Response, next: NextFunction): Promise<void> => {
     const data = request.body
 
@@ -64,7 +183,8 @@ export class ClientController {
       .save()
       .then((saved) => {
         response.status(200)
-        api.io.emit('update clients table', `Создан клиент с ID ${saved.id}`)
+        api.io.emit('created client', saved)
+        api.io.emit('update clients')
         response.send(saved)
       })
       .catch((err: Error) => {
@@ -86,7 +206,8 @@ export class ClientController {
       .then((saved) => {
         if (saved) {
           response.status(200)
-          api.io.emit('update clients table', `Обновлён клиент с ID ${saved.id}`)
+          api.io.emit('updated client', saved)
+          api.io.emit('update clients')
           response.send(saved)
         } else {
           next(new ObjectNotFoundException(this.model.modelName, id))
@@ -108,7 +229,8 @@ export class ClientController {
       .then((saved) => {
         if (saved) {
           response.status(200)
-          api.io.emit('update clients table', `Удалён клиент с ID ${saved.id}`)
+          api.io.emit('deleted client', id)
+          api.io.emit('update clients', id)
           response.send({ message: id })
         } else {
           next(new ObjectNotFoundException(this.model.modelName, id))

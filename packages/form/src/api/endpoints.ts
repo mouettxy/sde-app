@@ -5,9 +5,9 @@ export class Client {
     return {
       get: `/client/${args[0]}`,
       ping: `/client/${args[0]}/auth/ping`,
-      login: `/client/${args[0]}/auth/login`,
+      login: `/client/auth/login`,
       token: `/client/${args[0]}/auth/token`, // TODO
-      setAliases: `/client/${args[0]}/client-alias`,
+      setAliases: `/client/${args[0]}/client-address`,
       setOrder: `/client/${args[0]}/client-order`,
     }
   }
@@ -24,7 +24,7 @@ export class Client {
   public async getById(id: string | number) {
     try {
       const response = await this.http.get(this.endpoints(id).get)
-      return { data: response.data, status: response.status }
+      return response.data
     } catch (error) {
       return { data: false, status: 500 }
     }
@@ -33,15 +33,15 @@ export class Client {
   public async setAliases(id: string | number, data: any) {
     try {
       const response = await http.post(this.endpoints(id).setAliases, data)
-      return { data: response.data, status: response.status }
+      return response.data
     } catch (error) {
-      return { data: false, status: 500 }
+      return false
     }
   }
 
-  public async login(id: string | number, password: string) {
+  public async login(login: string | number, password: string) {
     try {
-      const response = await http.post(this.endpoints(id).login, { password })
+      const response = await http.post(this.endpoints().login, { login, password })
       return response.data
     } catch (error) {
       return false
@@ -51,9 +51,9 @@ export class Client {
   public async token(id: string | number) {
     try {
       const response = await http.post(this.endpoints(id).token)
-      return { data: response.data, status: response.status }
+      return response.data
     } catch (error) {
-      return { data: false, status: 500 }
+      return false
     }
   }
 

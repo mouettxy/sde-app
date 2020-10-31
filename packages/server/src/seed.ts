@@ -2,7 +2,7 @@ import { OrderModel } from './models/orderModel'
 import { UserModel } from './models/userModel'
 import { ClientModel } from './models/clientModel'
 import dJSON from 'dirty-json'
-import { each, find } from 'lodash'
+import { each, find, trim } from 'lodash'
 import axios from 'axios'
 import moment from 'moment'
 
@@ -61,10 +61,11 @@ async function seedClients(data) {
         id: e.CLIENT,
         password: e.password ? e.password.replace('$2a$', '$2y$') : null,
         hash: e.hash,
-        name: e.customer_name,
+        name: trim(e.customer_name),
         phone: e.customer_phone,
         email: null,
         rate: parseInt(e.Input) || 0,
+        food: e.customer_food === '1',
         discount: parseInt(e.discount) || 0,
         paymentType: e.payment_type,
         paymentWho: e.payment_who,
@@ -95,7 +96,7 @@ async function seedClients(data) {
       const mainAddress = find(created.addresess, { name: 'От нас / К нам' })
 
       if (mainAddress && !mainAddress.fields) {
-        const phoneNumber = formatPhoneNumber(e.user.customer_phone)
+        const phoneNumber = formatPhoneNumber(e.customer_phone)
         mainAddress.fields = {
           bundles: 0,
           bus: false,
@@ -140,7 +141,7 @@ async function seedUsers(data) {
       active: e.active === '1',
       canTakeOrders: e.take_orders === '1',
       workTIme: e.work_time,
-      role: e.post,
+      role: e.post === 'expeditor' ? 'courier' : e.post,
       permissionsLevel: e.post_permissions,
       transport: e.transport,
       region: e.region,

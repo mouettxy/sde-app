@@ -13,6 +13,30 @@ moment.locale('ru')
 })
 export default class Orders extends VuexModule {
   @Action
+  async getFiltered(payload: { status?: string }) {
+    const params = payload
+    if (!params.status) {
+      params.status = 'Новая'
+    }
+
+    this.context.commit('SET_LOADING', true)
+
+    try {
+      const response = await axios.get(`/order/filtered`, { params: payload })
+
+      if (response.status === 200) {
+        return response.data
+      } else {
+        return false
+      }
+    } catch (error) {
+      return false
+    } finally {
+      this.context.commit('SET_LOADING', false)
+    }
+  }
+
+  @Action
   async copyOne(payload: string | number) {
     this.context.commit('SET_LOADING', true)
 
@@ -94,7 +118,7 @@ export default class Orders extends VuexModule {
   public tableUri = '/order/paginated'
   public isLoading = false
   public countRows = 0
-  public options: any = TableHelpers.generateOptions(1, 2, 'id', function (options: any) {
+  public options: any = TableHelpers.generateOptions(1, 20, 'id', function (options: any) {
     return {
       ...options,
       filter: [{ type: 'in', key: 'status', value: ['Новая', 'В работе'] }],

@@ -58,7 +58,7 @@ export default class ModalCreateUser extends Vue {
     active: false,
     canTakeOrders: false,
     workTime: '',
-    role: 'expeditor',
+    role: 'courier',
     transport: 'moto',
     region: 'Краснодар',
     permissionsLevel: 3,
@@ -94,6 +94,7 @@ export default class ModalCreateUser extends Vue {
 
       if (response) {
         this.$notification.success('Успешное создание пользователя')
+        this.form.reset()
         this.modal = false
       } else {
         this.$notification.error('Упс... Что-то пошло не так...')

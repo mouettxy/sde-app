@@ -103,11 +103,12 @@ export default class ModalCreateClient extends Vue {
 
   async onCreate() {
     if (this.form.validate()) {
-      // TODO: response
       const response = await clientsModule.createClient(this.model)
 
       if (response) {
+        this.form.reset()
         this.$notification.success('Успешное создание клиента')
+        this.modal = false
       } else {
         this.$notification.error('Упс... Что-то пошло не так...')
       }

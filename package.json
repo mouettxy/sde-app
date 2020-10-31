@@ -6,8 +6,9 @@
   "scripts": {
     "serve:server": "yarn workspace @sde-app/server dev",
     "serve:app": "yarn workspace @sde-app/app serve",
+    "serve:form": "yarn workspace @sde-app/form serve",
     "deploy": "yarn workspace @sde-app/server compile && yarn workspace @sde-app/app build && node deploy",
-    "dev": "concurrently --kill-others \"yarn serve:server\" \"yarn serve:app\"",
+    "dev": "concurrently --kill-others \"yarn serve:server\" \"yarn serve:app\" \"yarn serve:form\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

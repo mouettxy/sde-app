@@ -79,7 +79,7 @@ export default class Auth extends VuexModule {
   async relog(payload: RelogInput) {
     const response = await api.get(payload.id)
 
-    if (response) {
+    if (!(response.data === false)) {
       this.context.commit('SET_USER', response)
       return true
     } else {

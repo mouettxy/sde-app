@@ -5,6 +5,10 @@ v-app
     :title='$route.meta.header',
     @click-menu='toggleDrawer'
   )
+    sde-button(
+      to='/',
+      icon
+    ) mdi-home
   v-navigation-drawer(
     v-model='drawer',
     clipped,
@@ -12,61 +16,27 @@ v-app
   )
     v-list(nav)
       v-list-item-group
-        template(v-if='!user')
-          v-list-item(
-            target='_blank',
-            href='https://api.sde.ru.com/client/cabinet.php'
-          )
-            v-list-item-icon
-              v-icon mdi-account
-            v-list-item-content
-              v-list-item-title Кабинет клиента
-          v-list-item(
-            target='_blank',
-            href='https://sde.ru.com/#contacts'
-          )
-            v-list-item-icon
-              v-icon mdi-contacts
-            v-list-item-content
-              v-list-item-title Контакты
-          v-list-item(
-            target='_blank',
-            href='https://sde.ru.com/payment'
-          )
-            v-list-item-icon
-              v-icon mdi-account-cash
-            v-list-item-content
-              v-list-item-title Оплата
-          v-list-item(
-            target='_blank',
-            href='https://sde.ru.com/#prices'
-          )
-            v-list-item-icon
-              v-icon mdi-cash-check
-            v-list-item-content
-              v-list-item-title Цены
-        template(v-else-if='user.role === "expeditor"')
-        template(v-else-if='user.role === "logist" || user.role === "administrator" || user.role === "manager"')
-          v-list-item(:to='{ name: "logistIndex" }')
-            v-list-item-icon
-              v-icon mdi-chart-box
-            v-list-item-content
-              v-list-item-title Рабочий стол
-          v-list-item(:to='{ name: "logistOrders" }')
-            v-list-item-icon
-              v-icon mdi-clipboard-alert
-            v-list-item-content
-              v-list-item-title Заявки
-          v-list-item(:to='{ name: "logistClients" }')
-            v-list-item-icon
-              v-icon mdi-account-multiple
-            v-list-item-content
-              v-list-item-title Клиенты
-          v-list-item(:to='{ name: "logistUsers" }')
-            v-list-item-icon
-              v-icon mdi-account-hard-hat
-            v-list-item-content
-              v-list-item-title Пользователи
+        template(v-for='(items, role) in menu')
+          template(v-if='userRole === role')
+            template(v-for='item in items')
+              template(v-if='item.to')
+                v-list-item(
+                  :to='item.to',
+                  :target='item.target'
+                )
+                  v-list-item-icon
+                    v-icon {{ item.icon }}
+                  v-list-item-content
+                    v-list-item-title {{ item.text }}
+              template(v-else)
+                v-list-item(
+                  :target='item.target',
+                  :href='item.href'
+                )
+                  v-list-item-icon
+                    v-icon {{ item.icon }}
+                  v-list-item-content
+                    v-list-item-title {{ item.text }}
         template(v-if='!user')
           v-list-item(:to='{ name: "login" }')
             v-list-item-icon
@@ -98,14 +68,108 @@ import NprogressContainer from 'vue-nprogress/src/NprogressContainer.vue'
 export default class App extends Vue {
   public drawer = true
 
-  @Socket()
-  onSocketConnected() {
-    console.log('socket connected')
+  public menu = {
+    guest: [
+      {
+        target: '_blank',
+        href: 'https://api.sde.ru.com/client/cabinet.php',
+        icon: 'mdi-account',
+        text: 'Кабинет клиента',
+      },
+      {
+        target: '_blank',
+        href: 'https://sde.ru.com/#contacts',
+        icon: 'mdi-contacts',
+        text: 'Контакты',
+      },
+      {
+        target: '_blank',
+        href: 'https://sde.ru.com/payment',
+        icon: 'mdi-account-cash',
+        text: 'Оплата',
+      },
+      {
+        target: '_blank',
+        href: 'https://sde.ru.com/#prices',
+        icon: 'mdi-cash-check',
+        text: 'Цены',
+      },
+    ],
+    courier: [
+      {
+        target: '_self',
+        to: { name: 'courierIndex' },
+        icon: 'mdi-clipboard-account',
+        text: 'Рабочий стол',
+      },
+      {
+        target: '_self',
+        to: { name: 'courierOrders' },
+        icon: 'mdi-clipboard-alert',
+        text: 'Заявки',
+      },
+    ],
+    logist: [
+      {
+        target: '_self',
+        to: { name: 'logistIndex' },
+        icon: 'mdi-chart-box',
+        text: 'Рабочий стол',
+      },
+      {
+        target: '_self',
+        to: { name: 'logistOrders' },
+        icon: 'mdi-clipboard-alert',
+        text: 'Заявки',
+      },
+      {
+        target: '_self',
+        to: { name: 'logistClients' },
+        icon: 'mdi-account-multiple',
+        text: 'Клиенты',
+      },
+      {
+        target: '_self',
+        to: { name: 'logistUsers' },
+        icon: 'mdi-account-hard-hat',
+        text: 'Пользователи',
+      },
+    ],
+    administrator: [
+      {
+        target: '_self',
+        to: { name: 'logistIndex' },
+        icon: 'mdi-chart-box',
+        text: 'Рабочий стол',
+      },
+      {
+        target: '_self',
+        to: { name: 'logistOrders' },
+        icon: 'mdi-clipboard-alert',
+        text: 'Заявки',
+      },
+      {
+        target: '_self',
+        to: { name: 'logistClients' },
+        icon: 'mdi-account-multiple',
+        text: 'Клиенты',
+      },
+      {
+        target: '_self',
+        to: { name: 'logistUsers' },
+        icon: 'mdi-account-hard-hat',
+        text: 'Пользователи',
+      },
+    ],
   }
 
   @Watch('header')
   onRouteHeaderChange(value: string) {
     document.title = value
+  }
+
+  get userRole() {
+    return this.user ? this.user.role : 'guest'
   }
 
   get user() {

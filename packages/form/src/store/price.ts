@@ -219,7 +219,11 @@ class Price {
           client: this.user,
         })
 
-        return parseInt(tPriceFinally) * parseInt(tModifierFinally)
+        if (tModifierFinally) {
+          return parseInt(tPriceFinally) * parseInt(tModifierFinally)
+        }
+
+        return parseInt(tPriceFinally)
       }
     } catch (e) {
       return 0

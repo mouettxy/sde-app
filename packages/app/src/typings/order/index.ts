@@ -54,6 +54,7 @@ export type Order = {
   orderToTime: Date
   status: string
   transport: string
+  food: boolean
   to: string
   from: string
   clientId: string

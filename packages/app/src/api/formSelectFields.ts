@@ -1,5 +1,5 @@
 export const userRolesSelect = [
-  { text: 'Курьер', value: 'expeditor' },
+  { text: 'Курьер', value: 'courier' },
   { text: 'Логист', value: 'logist' },
   { text: 'Менеджер', value: 'manager' },
   { text: 'Администратор', value: 'administrator' },

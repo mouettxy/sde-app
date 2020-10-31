@@ -1,10 +1,10 @@
 import { authModule } from './../store/index'
 import Vue from 'vue'
-import Router from 'vue-router'
+import Router, { NavigationGuardNext, Route } from 'vue-router'
 import routes from 'vue-auto-routing'
 import { createRouterLayout } from 'vue-router-layout'
-import { includes } from 'lodash'
 import NProgress from '@/plugins/progress-bar'
+import { ability } from '@/plugins/casl'
 
 Vue.use(Router)
 
@@ -23,21 +23,35 @@ const router = new Router({
   mode: 'history',
 })
 
-export default router
-
-router.beforeEach((to, from, next) => {
+function routerCheck(to: Route, from: Route, next: NavigationGuardNext<Vue>) {
+  const isPageRequiresAuth = to.meta.requiresAuth
   const isLoggedIn = authModule.isLoggedIn
+  const canNavigate = to.matched.some((route: any) => {
+    return ability.can(route.meta.action || 'read', route.meta.resource)
+  })
+  const toAuth = to.name === 'login'
 
-  const notAuthPages = ['login', 'index', 'order', 'client']
-
-  if ((!isLoggedIn && includes(notAuthPages, to.name)) || isLoggedIn) {
+  if (toAuth && !isLoggedIn) {
     next()
     return
-  } else {
+  }
+
+  if (isPageRequiresAuth && !isLoggedIn) {
     next({ name: 'login' })
     return
+  } else if (toAuth && isLoggedIn) {
+    next({ name: 'index' })
   }
-})
+
+  if (canNavigate) {
+    next()
+    return
+  }
+
+  next()
+}
+
+router.beforeEach(routerCheck)
 
 router.beforeResolve((to, from, next) => {
   // If this isn't an initial page load.
@@ -49,6 +63,7 @@ router.beforeResolve((to, from, next) => {
 })
 
 router.afterEach((to, from) => {
-  // Complete the animation of the route progress bar.
   NProgress.done()
 })
+
+export default router

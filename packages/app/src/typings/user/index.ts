@@ -29,7 +29,7 @@ export type User = {
   active: boolean
   canTakeOrders: boolean
   workTime: string
-  role: string
+  role: 'courier' | 'administrator' | 'logist'
   transport: string
   region: string
   permissionsLevel: number

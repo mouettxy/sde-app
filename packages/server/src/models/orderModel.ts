@@ -70,6 +70,7 @@ export const formatAddress = (address: OrderAddress) => {
         this.region = client.region
         this.paymentForm = client.paymentForm
         this.paymentType = client.paymentType
+        this.food = client.food
       }
     }
 
@@ -232,6 +233,9 @@ export class Order {
 
   @prop({ default: 0 })
   public totalAdditionals: number
+
+  @prop({ default: false })
+  public food: boolean
 
   @prop({ _id: false, type: [OrderAddress] })
   public addresses: OrderAddress[]

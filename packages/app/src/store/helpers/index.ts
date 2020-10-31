@@ -32,7 +32,6 @@ export class TableHelpers {
         text: headers[value],
         value,
         show: true,
-        /* width: `${headers[value].length * 1.5}rem`, */
       })
     }
 

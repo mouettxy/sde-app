@@ -3,12 +3,12 @@
     "mileage": [
       {
         "expression": "<%= mileage <= 3 %>",
-        "price": 125,
+        "price": 95,
         "modifier": false
       },
       {
         "expression": "<%= mileage > 3 && mileage <= 5 %>",
-        "price": 165,
+        "price": 135,
         "modifier": false
       },
       {
@@ -18,17 +18,17 @@
       },
       {
         "expression": "<%= mileage > 5 && mileage < 10 %>",
-        "price": "<%= mileage * 31 %>",
+        "price": "<%= mileage * 25 %>",
         "modifier": false
       },
       {
         "expression": "<%= mileage >= 10 && mileage < 20 %>",
-        "price": "<%= mileage * 26 %>",
+        "price": "<%= mileage * 23 %>",
         "modifier": false
       }
     ],
     "mileageFinally": {
-      "price": "<%= mileage * 24 %>",
+      "price": "<%= mileage * 21 %>",
       "modifier": false
     },
     "additionals": {
@@ -43,18 +43,18 @@
       "extraPoint": 20
     },
     "carMarkup": 0,
-    "quickMarkup": 0
+    "quickMarkup": 20
   },
   "Краснодар": {
     "mileage": [
       {
         "expression": "<%= mileage <= 3 %>",
-        "price": 125,
+        "price": 95,
         "modifier": false
       },
       {
         "expression": "<%= mileage > 3 && mileage <= 5 %>",
-        "price": 165,
+        "price": 135,
         "modifier": false
       },
       {
@@ -64,17 +64,17 @@
       },
       {
         "expression": "<%= mileage > 5 && mileage < 10 %>",
-        "price": "<%= mileage * 31 %>",
+        "price": "<%= mileage * 25 %>",
         "modifier": false
       },
       {
         "expression": "<%= mileage >= 10 && mileage < 20 %>",
-        "price": "<%= mileage * 26 %>",
+        "price": "<%= mileage * 23 %>",
         "modifier": false
       }
     ],
     "mileageFinally": {
-      "price": "<%= mileage * 24 %>",
+      "price": "<%= mileage * 21 %>",
       "modifier": false
     },
     "additionals": {
@@ -89,18 +89,18 @@
       "extraPoint": 20
     },
     "carMarkup": 0,
-    "quickMarkup": 0
+    "quickMarkup": 20
   },
   "Севастополь": {
     "mileage": [
       {
         "expression": "<%= mileage <= 3 %>",
-        "price": 125,
+        "price": 95,
         "modifier": false
       },
       {
         "expression": "<%= mileage > 3 && mileage <= 5 %>",
-        "price": 165,
+        "price": 135,
         "modifier": false
       },
       {
@@ -110,17 +110,17 @@
       },
       {
         "expression": "<%= mileage > 5 && mileage < 10 %>",
-        "price": "<%= mileage * 31 %>",
+        "price": "<%= mileage * 25 %>",
         "modifier": false
       },
       {
         "expression": "<%= mileage >= 10 && mileage < 20 %>",
-        "price": "<%= mileage * 26 %>",
+        "price": "<%= mileage * 23 %>",
         "modifier": false
       }
     ],
     "mileageFinally": {
-      "price": "<%= mileage * 24 %>",
+      "price": "<%= mileage * 21 %>",
       "modifier": false
     },
     "additionals": {
@@ -135,18 +135,18 @@
       "extraPoint": 20
     },
     "carMarkup": 0,
-    "quickMarkup": 0
+    "quickMarkup": 20
   },
   "Санкт-Петербург": {
     "mileage": [
       {
         "expression": "<%= mileage <= 3 %>",
-        "price": 125,
+        "price": 95,
         "modifier": false
       },
       {
         "expression": "<%= mileage > 3 && mileage <= 5 %>",
-        "price": 165,
+        "price": 135,
         "modifier": false
       },
       {
@@ -156,17 +156,17 @@
       },
       {
         "expression": "<%= mileage > 5 && mileage < 10 %>",
-        "price": "<%= mileage * 31 %>",
+        "price": "<%= mileage * 25 %>",
         "modifier": false
       },
       {
         "expression": "<%= mileage >= 10 && mileage < 20 %>",
-        "price": "<%= mileage * 26 %>",
+        "price": "<%= mileage * 23 %>",
         "modifier": false
       }
     ],
     "mileageFinally": {
-      "price": "<%= mileage * 24 %>",
+      "price": "<%= mileage * 21 %>",
       "modifier": false
     },
     "additionals": {
@@ -181,18 +181,18 @@
       "extraPoint": 20
     },
     "carMarkup": 0,
-    "quickMarkup": 0
+    "quickMarkup": 20
   },
   "Ставрополь": {
     "mileage": [
       {
         "expression": "<%= mileage <= 3 %>",
-        "price": 125,
+        "price": 95,
         "modifier": false
       },
       {
         "expression": "<%= mileage > 3 && mileage <= 5 %>",
-        "price": 165,
+        "price": 135,
         "modifier": false
       },
       {
@@ -202,17 +202,17 @@
       },
       {
         "expression": "<%= mileage > 5 && mileage < 10 %>",
-        "price": "<%= mileage * 31 %>",
+        "price": "<%= mileage * 25 %>",
         "modifier": false
       },
       {
         "expression": "<%= mileage >= 10 && mileage < 20 %>",
-        "price": "<%= mileage * 26 %>",
+        "price": "<%= mileage * 23 %>",
         "modifier": false
       }
     ],
     "mileageFinally": {
-      "price": "<%= mileage * 24 %>",
+      "price": "<%= mileage * 21 %>",
       "modifier": false
     },
     "additionals": {
@@ -227,18 +227,18 @@
       "extraPoint": 20
     },
     "carMarkup": 0,
-    "quickMarkup": 0
+    "quickMarkup": 20
   },
   "Симферополь": {
     "mileage": [
       {
         "expression": "<%= mileage <= 3 %>",
-        "price": 125,
+        "price": 95,
         "modifier": false
       },
       {
         "expression": "<%= mileage > 3 && mileage <= 5 %>",
-        "price": 165,
+        "price": 135,
         "modifier": false
       },
       {
@@ -248,17 +248,17 @@
       },
       {
         "expression": "<%= mileage > 5 && mileage < 10 %>",
-        "price": "<%= mileage * 31 %>",
+        "price": "<%= mileage * 25 %>",
         "modifier": false
       },
       {
         "expression": "<%= mileage >= 10 && mileage < 20 %>",
-        "price": "<%= mileage * 26 %>",
+        "price": "<%= mileage * 23 %>",
         "modifier": false
       }
     ],
     "mileageFinally": {
-      "price": "<%= mileage * 24 %>",
+      "price": "<%= mileage * 21 %>",
       "modifier": false
     },
     "additionals": {
@@ -273,6 +273,6 @@
       "extraPoint": 20
     },
     "carMarkup": 0,
-    "quickMarkup": 0
+    "quickMarkup": 20
   }
 }

@@ -6,7 +6,7 @@ import { ObjectNotFoundException } from '../exceptions'
 import { HttpException } from '../exceptions'
 import { OrderModel } from '../models'
 import { copyToExcel } from '../utils/helpers'
-import { includes, join, map } from 'lodash'
+import { includes, isNull, join, map } from 'lodash'
 
 export class OrdersController {
   private model = OrderModel
@@ -121,6 +121,42 @@ export class OrdersController {
     response.send(toCopy)
   }
 
+  public getFiltered = async (
+    request: express.Request,
+    response: express.Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    let status: any = request.query.status
+
+    if (status === 'Новые') {
+      status = ['Новая', 'В работе']
+    } else if (status === 'Любые') {
+      status = ['Новая', 'В работе', 'Закрыта', 'Не состоялась']
+    } else {
+      status = [status]
+    }
+
+    try {
+      const orders = await this.model.aggregate([
+        {
+          $match: {
+            status: { $in: status },
+          },
+        },
+        {
+          $sort: {
+            id: -1,
+          },
+        },
+      ])
+
+      response.status(200)
+      response.send(orders ? orders : [])
+    } catch (error) {
+      next(new HttpException(500, error.message))
+    }
+  }
+
   public getById = async (request: express.Request, response: express.Response, next: NextFunction): Promise<void> => {
     const id = request.params.id
     await this.model
@@ -137,8 +173,6 @@ export class OrdersController {
   }
 
   public create = async (request: express.Request, response: express.Response, next: NextFunction): Promise<void> => {
-    const data = request.body
-
     const created = new this.model(request.body)
 
     await created
